@@ -32,6 +32,16 @@ describe Board do
       @board.place_marker(7, "X")
       expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,"X",nil])
     end
+
+    it "shouldn't place a marker for an invalid location" do
+      @board.place_marker(10, "X")
+      expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+    end
+
+    it "shouldn't place a marker for an invalid marker" do
+      @board.place_marker(10, "XO")
+      expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+    end
   end
 
 
