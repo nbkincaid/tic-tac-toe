@@ -37,13 +37,18 @@ class Board
   end
 
   def three_in_a_row_marker
+
     SEQUENCES.each do |seq|
       sequence_vals = [ @squares[seq[0]], @squares[seq[1]], @squares[seq[2]] ].uniq
+
       if sequence_vals.length == 1
         return sequence_vals[0]
       end
+
     end
+
     return nil
+
   end
 
   def squares_full?
