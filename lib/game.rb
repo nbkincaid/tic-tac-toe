@@ -7,7 +7,7 @@ class Game
     @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     @view = GameView.new
     @players = []
-    @next_move = nil
+    @next_to_move = nil
 
     # @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     # @com = "X"
@@ -17,7 +17,6 @@ class Game
   def play_game
 
     @view.clear
-
     @view.welcome_msg
 
     @view.select_game_type_msg
@@ -30,24 +29,20 @@ class Game
     @view.get_first_player_msg(@players[0].marker, @players[1].marker)
     get_first_player_input
 
+    until game_over?
+      @view.clear
+      @view.show_board(@board.state)
 
-    # do a loop here to show the board and receive moves until game over
-      # inside the loop, play the
-    @view.clear
-    @view.show_board(@board.state)
+      # say where the last move went and by
+      puts "nice move, player"
+      # ask the current player by their name where they wan't to go
+      puts "player, where would you like to go"
 
-
-
-
+      get_move(@next_to_move)
+    end
 
     # once game over, show the result of how it ended
 
-
-
-
-
-    # puts "Welcome to my Tic Tac Toe game"
-    # puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
     # puts "Please select your spot."
     # until game_is_over(@board) || tie(@board)
     #   get_human_spot
@@ -57,6 +52,19 @@ class Game
     #   puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
     # end
     # puts "Game over"
+  end
+
+
+  def get_move(player)
+
+    if player.class == HumanPlayer
+      move_location = get_input.to_i
+      @board.place_marker(move_location, player.marker)
+
+    # else if(player.class == ComputerPlayer)
+
+
+    end
   end
 
 
@@ -162,11 +170,15 @@ class Game
     player = find_player_by_marker(marker)
 
     if player != nil
-      @next_move = player
+      @next_to_move = player
     else
       @view.retry_input_msg
       get_first_player_input
     end
+  end
+
+  def game_over?
+    @board.three_in_a_row? || @board.squares_full?
   end
 
 
