@@ -21,7 +21,7 @@ class GameView
   end
 
   def select_player_marker_msg(player_number, player_type)
-    puts "\nPlease select an alphabetical character for player #{player_number}, #{player_type}."
+    puts "\nPlease choose an alphabetical character for player #{player_number}, #{player_type}."
   end
 
   def input_thank_you_msg

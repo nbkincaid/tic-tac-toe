@@ -7,7 +7,8 @@ class Game
     @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     @view = GameView.new
     @players = []
-    @next_to_move = nil
+    @moves = []
+    @current_player = nil
 
     # @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     # @com = "X"
@@ -33,33 +34,54 @@ class Game
       @view.clear
       @view.show_board(@board.state)
 
-      # say where the last move went and by
-      puts "nice move, player"
-      # ask the current player by their name where they wan't to go
-      puts "player, where would you like to go"
+      # say where the last move went and by who
+      if (@moves.length > 0)
+        puts "\nThe last move was placed in space #{@moves[-1][:location]} by #{@moves[-1][:player].marker}"
+      end
 
-      get_move(@next_to_move)
+      # ask the current player by their name where they wan't to go
+      puts "\nPlayer #{@current_player.marker}, please enter where you would like to move."
+      get_move(@current_player)
+
+      switch_player
     end
 
     # once game over, show the result of how it ended
 
-    # puts "Please select your spot."
-    # until game_is_over(@board) || tie(@board)
-    #   get_human_spot
-    #   if !game_is_over(@board) && !tie(@board)
-    #     eval_board
-    #   end
-    #   puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
-    # end
-    # puts "Game over"
+    @view.clear
+    @view.show_board(@board.state)
+
+    if @board.three_in_a_row?
+      puts "\nCongratulations #{@board.three_in_a_row_marker}, you win!"
+    else
+      puts "\nCat game!"
+    end
+
+
+    #show a thank you message
+    puts "\nThank you for playing!\n"
   end
 
+  def switch_player
+    current_player_index = @players.index(@current_player)
+
+    if current_player_index == 0
+      @current_player = @players[1]
+    elsif(current_player_index == 1)
+      @current_player = @players[0]
+    end
+
+  end
 
   def get_move(player)
 
     if player.class == HumanPlayer
       move_location = get_input.to_i
       @board.place_marker(move_location, player.marker)
+      store_move(player, move_location)
+
+
+
 
     # else if(player.class == ComputerPlayer)
 
@@ -67,6 +89,10 @@ class Game
     end
   end
 
+
+  def store_move(player, location)
+    @moves << {player: player, location: location}
+  end
 
   def get_game_type_input
 
@@ -115,7 +141,6 @@ class Game
 
   end
 
-
   def get_player_markers_input
     @players.each_with_index do |player,i|
       player_number = i+1
@@ -126,7 +151,6 @@ class Game
 
   def get_player_marker_input_for(player)
 
-
     while player.marker == nil
       player_marker = get_input
 
@@ -134,7 +158,6 @@ class Game
         @view.already_selected_msg
         get_player_marker_input_for(player)
       else
-
         valid = player.set_marker(player_marker)
 
         if valid
@@ -147,18 +170,14 @@ class Game
 
   end
 
-
   def is_a_duplicate_marker?(player_marker)
     search_result = find_player_by_marker(player_marker)
-
     if search_result == nil
       false
     else
       true
     end
-
   end
-
 
   def find_player_by_marker(marker)
     @players.find{|player| player.marker == marker}
@@ -170,7 +189,7 @@ class Game
     player = find_player_by_marker(marker)
 
     if player != nil
-      @next_to_move = player
+      @current_player = player
     else
       @view.retry_input_msg
       get_first_player_input
