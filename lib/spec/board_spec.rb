@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe Board do
 
   before :each do
-    @board = Board.new
+    @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
   end
 
   describe "#new" do
@@ -23,71 +23,76 @@ describe Board do
 
   describe "#state" do
     it "returns an array representating the state of the squares" do
-      expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     end
   end
 
   describe "#place_marker" do
     it "should place a specified marker on a specified spot" do
       @board.place_marker(7, "X")
-      expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,"X",nil])
+      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "X", "8"])
     end
 
     it "shouldn't place a marker for an invalid location" do
       @board.place_marker(10, "X")
-      expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     end
 
     it "shouldn't place a marker for an invalid marker" do
       @board.place_marker(10, "XO")
-      expect(@board.state).to eq([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     end
   end
 
-
   describe "#three_in_a_row?" do
     it "should return true if there is a match in the top horizontal row" do
-      board = Board.new(["X","X","X","O","O",nil,nil,nil,nil])
+      board = Board.new(["X","X","X","O","O", "5", "6", "7", "8"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the middle horizontal row" do
-      board = Board.new(["X","X",nil,"O","O","O",nil,"X",nil])
+      board = Board.new(["X","X","2","O","O","O","6","X","8"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the middle horizontal row" do
-      board = Board.new(["O","O",nil,nil,nil,nil,"X","X","X"])
+      board = Board.new(["O","O","2", "3", "4", "5","X","X","X"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the left vertical column" do
-      board = Board.new(["O",nil,"X","O",nil,nil,"O",nil,"X"])
+      board = Board.new(["O","1","X","O","4", "5","O","7","X"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the middle vertical column" do
-      board = Board.new(["O","X",nil,nil,"X",nil,"O","X",nil])
+      ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+      board = Board.new(["O","X","2", "3","X","5","O","X","8"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the right vertical column" do
-      board = Board.new(["X",nil,"O","X",nil,"O",nil,nil,"O"])
+      board = Board.new(["X","1","O","X","4","O","6","7","O"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the left diagonal" do
-      board = Board.new(["X",nil,"O",nil,"X","O",nil,"O","X"])
+      board = Board.new(["X","1","O","3","X","O","6","O","X"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return true if there is a match in the right diagonal" do
-      board = Board.new(["X","X","O",nil,"O",nil,"O",nil,nil])
+      board = Board.new(["X","X","O","3","O","5","O","7","8"])
       expect(board.three_in_a_row?).to eq(true)
     end
 
     it "should return false if there is no match in an empty board" do
       board = Board.new([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+      expect(board.three_in_a_row?).to eq(false)
+    end
+
+    it "should return false if there is no match in a board with only string representations of digits" do
+      board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
       expect(board.three_in_a_row?).to eq(false)
     end
 
@@ -99,25 +104,30 @@ describe Board do
 
 
   describe "#squares_full?" do
-    it "should return true for a count of 0 nil values" do
+    it "should return true for a count of 0 'numerical' values" do
       board = Board.new(["X","O","X","O","X","O","X","O","X"])
       expect(board.squares_full?).to eq(true)
     end
 
-    it "should return false for more than 0 nil values" do
-      board = Board.new(["X","O","X","O", nil,"O","X","O","X"])
+    it "should return false for more than 0 'numerical' values" do
+      board = Board.new(["X","O","X","O", "4","O","X","O","X"])
+      expect(board.squares_full?).to eq(false)
+    end
+
+    it "should return false for all nil values" do
+      board = Board.new([nil,nil,nil,nil,nil,nil,nil,nil,nil])
       expect(board.squares_full?).to eq(false)
     end
   end
 
   describe "#three_in_row_marker" do
     it "should return the correct marker for a top row three in a row sequence" do
-      board = Board.new(["O",nil,"X","O",nil,nil,"O",nil,"X"])
+      board = Board.new(["O","1","X","O","4","5","O","7","X"])
       expect(board.three_in_a_row_marker).to eq("O")
     end
 
     it "should return the correct marker for a right diagonal three in a row sequence" do
-      board = Board.new(["X","X","O",nil,"O",nil,"O",nil,nil])
+      board = Board.new(["X","X","O","3","O","5","O","7","8"])
       expect(board.three_in_a_row_marker).to eq("O")
     end
 

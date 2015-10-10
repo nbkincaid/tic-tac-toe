@@ -52,7 +52,8 @@ class Board
   end
 
   def squares_full?
-    !@squares.include?(nil)
+    square_content_uniqs = @squares.uniq
+    square_content_uniqs.length == 2 && square_content_uniqs.all? {|marker| marker =~ /[[:alpha:]]/}
   end
 
   # *********************************************************
@@ -82,7 +83,7 @@ class Board
   end
 
   def unoccupied_square?(location)
-    if @squares[location] == nil
+    if !(@squares[location] =~ /[[:alpha:]]/)
       true
     else
       false

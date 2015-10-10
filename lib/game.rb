@@ -4,7 +4,7 @@ require_relative 'human_player'
 
 class Game
   def initialize
-    @board = Board.new
+    @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     @view = GameView.new
     @players = []
     @next_move = nil
@@ -16,15 +16,32 @@ class Game
 
   def play_game
 
+    @view.clear
+
     @view.welcome_msg
 
     @view.select_game_type_msg
     get_game_type_input
 
+    @view.clear
     get_player_markers_input
 
+    @view.clear
     @view.get_first_player_msg(@players[0].marker, @players[1].marker)
     get_first_player_input
+
+
+    # do a loop here to show the board and receive moves until game over
+      # inside the loop, play the
+    @view.clear
+    @view.show_board(@board.state)
+
+
+
+
+
+    # once game over, show the result of how it ended
+
 
 
 
@@ -61,7 +78,6 @@ class Game
   end
 
   def valid_game_type?(input)
-
     input = input.to_i
 
     if input == 1 || input == 2 || input == 3
@@ -102,26 +118,30 @@ class Game
 
   def get_player_marker_input_for(player)
 
-    player_marker = get_input
 
-    if is_a_duplicate_marker?(player_marker)
-      @view.already_selected_msg
-      get_player_marker_input_for(player)
+    while player.marker == nil
+      player_marker = get_input
+
+      if is_a_duplicate_marker?(player_marker)
+        @view.already_selected_msg
+        get_player_marker_input_for(player)
+      else
+
+        valid = player.set_marker(player_marker)
+
+        if valid
+          # @view.input_thank_you_msg
+        else
+          @view.retry_input_msg
+        end
+      end
     end
 
-    valid = player.set_marker(player_marker)
-
-    if valid
-      # @view.input_thank_you_msg
-    else
-      @view.retry_input_msg
-      get_player_marker_input_for(player)
-    end
   end
 
 
   def is_a_duplicate_marker?(player_marker)
-    search_result = @players.find{|player| player.marker == player_marker}
+    search_result = find_player_by_marker(player_marker)
 
     if search_result == nil
       false
@@ -130,6 +150,25 @@ class Game
     end
 
   end
+
+
+  def find_player_by_marker(marker)
+    @players.find{|player| player.marker == marker}
+  end
+
+  def get_first_player_input
+    marker = get_input
+
+    player = find_player_by_marker(marker)
+
+    if player != nil
+      @next_move = player
+    else
+      @view.retry_input_msg
+      get_first_player_input
+    end
+  end
+
 
   # def get_human_spot
   #   spot = nil
