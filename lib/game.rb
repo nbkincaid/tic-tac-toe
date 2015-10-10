@@ -1,12 +1,13 @@
 require_relative 'board'
 require_relative 'game_view'
-
+require_relative 'human_player'
 
 class Game
   def initialize
     @board = Board.new
     @view = GameView.new
     @players = []
+    @next_move = nil
 
     # @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     # @com = "X"
@@ -18,10 +19,12 @@ class Game
     @view.welcome_msg
 
     @view.select_game_type_msg
+    get_game_type_input
 
-    get_game_type
+    get_player_markers_input
 
-
+    @view.get_first_player_msg(@players[0].marker, @players[1].marker)
+    get_first_player_input
 
 
 
@@ -40,15 +43,15 @@ class Game
   end
 
 
-  def get_game_type
+  def get_game_type_input
 
     game_type = get_input
 
     if valid_game_type?(game_type)
-      set_game_type
+      set_game_type(game_type)
     else
       puts @view.retry_input_msg
-      get_game_type
+      get_game_type_input
     end
 
   end
@@ -70,7 +73,61 @@ class Game
 
 
   def set_game_type(type)
-    if type == 1
+
+    case type.to_i
+
+    when 1
+      @players << HumanPlayer.new
+      @players << HumanPlayer.new
+    # when 2
+    #   @players << HumanPlayer.new
+    #   @players << ComputerPlayer.new
+    # when 3
+    #   @players << ComputerPlayer.new
+    #   @players << ComputerPlayer.new
+    else
+
+    end
+
+  end
+
+
+  def get_player_markers_input
+    @players.each_with_index do |player,i|
+      player_number = i+1
+      @view.select_player_marker_msg(player_number, player.class)
+      get_player_marker_input_for(player)
+    end
+  end
+
+  def get_player_marker_input_for(player)
+
+    player_marker = get_input
+
+    if is_a_duplicate_marker?(player_marker)
+      @view.already_selected_msg
+      get_player_marker_input_for(player)
+    end
+
+    valid = player.set_marker(player_marker)
+
+    if valid
+      # @view.input_thank_you_msg
+    else
+      @view.retry_input_msg
+      get_player_marker_input_for(player)
+    end
+  end
+
+
+  def is_a_duplicate_marker?(player_marker)
+    search_result = @players.find{|player| player.marker == player_marker}
+
+    if search_result == nil
+      false
+    else
+      true
+    end
 
   end
 
