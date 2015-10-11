@@ -18,6 +18,16 @@ class Board
     @squares
   end
 
+  def clear_state
+    @squares.map do |square|
+      if square =~ /[[:alpha:]]/
+        square
+      else
+        " "
+      end
+    end
+  end
+
   def place_marker(location, marker)
     if valid_location?(location) && valid_marker?(marker)
       @squares[location] = marker

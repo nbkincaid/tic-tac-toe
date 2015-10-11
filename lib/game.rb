@@ -49,7 +49,7 @@ class Game
     # once game over, show the result of how it ended
 
     @view.clear
-    @view.show_board(@board.state)
+    @view.show_board(@board.clear_state)
 
     if @board.three_in_a_row?
       puts "\nCongratulations #{@board.three_in_a_row_marker}, you win!"
@@ -59,7 +59,7 @@ class Game
 
 
     #show a thank you message
-    puts "\nThank you for playing!\n"
+    puts "\nThank you for playing!\n\n"
   end
 
   def switch_player

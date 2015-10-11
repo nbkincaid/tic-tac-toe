@@ -27,6 +27,13 @@ describe Board do
     end
   end
 
+  describe "#clear_state" do
+    it "returns an array representating the state of the squares without the numbers" do
+      board = Board.new(["X", "X", "X", "O", "O", "5", "6", "7", "8"])
+      expect(board.clear_state).to eq(["X", "X", "X", "O", "O", " ", " ", " ", " "])
+    end
+  end
+
   describe "#place_marker" do
     it "should place a specified marker on a specified spot" do
       @board.place_marker(7, "X")
