@@ -45,4 +45,25 @@ class GameView
     puts "\t #{board[0]} | #{board[1]} | #{board[2]}\n\t-----------\n\t #{board[3]} | #{board[4]} | #{board[5]}\n\t-----------\n\t #{board[6]} | #{board[7]} | #{board[8]}"
   end
 
+  def get_move_msg(marker)
+     puts "\nPlayer #{marker}, please enter where you would like to move."
+  end
+
+  def move_msg(location, marker)
+    puts "\nThe last move was placed in space #{location} by #{marker}"
+  end
+
+  def winner_msg(winner_marker)
+     puts "\nCongratulations #{winner_marker}, you win!"
+  end
+
+  def cat_game_msg
+    puts "\nCat game!"
+  end
+
+  def thank_you_msg
+    puts "\nThank you for playing!\n\n"
+  end
+
+
 end

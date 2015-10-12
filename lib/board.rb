@@ -31,6 +31,10 @@ class Board
   def place_marker(location, marker)
     if valid_location?(location) && valid_marker?(marker)
       @squares[location] = marker
+      true
+
+    else
+      false
     end
   end
 
