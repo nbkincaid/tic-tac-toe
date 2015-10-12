@@ -2,73 +2,84 @@ require_relative 'player'
 
 class ComputerPlayer < Player
 
-  GO_FIRST_MOVES =  [4,1,3,5,7,0,2,6,8]
-  GO_SECOND_MOVES = [4,0,8,2,6,1,3,5,7,]
+  FIRST_MOVE_CHOICES = [4,0]
+  SIDE_CHOICES = [1,3,5,7]
+  CORNER_CHOICES = [0,8,2,6]
+  LEFTOVER_MOVE_CHOICES = [4,0,8,2,6,1,3,5,7]
 
-  SIDE_MOVES = [1,3,5,7]
-  CORNER_MOVES = [0,2,6,8]
-
-  def initialize
-    @went_first = nil
-  end
-
-  def check_for_first_move(board)
-    if board.squares_empty?
-      @went_first = true
-    end
-  end
-
-  def choose_location(board)
+  def appear_to_be_thinking
     sleep(2)
+  end
 
-    priority_choice = board.sequence_filler_square
-    if priority_choice != nil
-      return priority_choice
-    end
+  def avoid_defeat_or_win_game_choice(board)
+    choice = board.sequence_filler_square
+  end
 
-    board_marker_count = board.count_marker(self.marker)
+  def tactical_choice(board)
+    board.most_eligible_square
+  end
 
-    if board_marker_count == 0
-      [4,0].each do |location|
-        if board.valid_location?(location)
-          return location
-        end
-      end
-    end
-
-    if board_marker_count == 1
-      if board.has_at?(self.marker,4)
-        [1,3,5,7].each do |location|
-          if board.valid_location?(location)
-            return location
-          end
-        end
-      else
-        [0,8,2,6].each do |location|
-          if board.valid_location?(location)
-            return location
-          end
-        end
-      end
-    end
-
-    tactical_choice = board.most_eligible_square
-    if tactical_choice != nil
-      return tactical_choice
-    end
-
-
-    if @went_first
-      move_choices = GO_FIRST_MOVES
-    else
-      move_choices = GO_SECOND_MOVES
-    end
-
-    move_choices.each do |location|
+  def leftover_move_choice(board)
+    LEFTOVER_MOVE_CHOICES.each do |location|
       if board.valid_location?(location)
         return location
       end
     end
   end
 
+  def first_move?(board)
+    board.count_marker(self.marker) == 0
+  end
+
+  def second_move?(board)
+    board.count_marker(self.marker) == 1
+  end
+
+  def pick_first_move(board)
+    FIRST_MOVE_CHOICES.each do |location|
+      if board.valid_location?(location)
+        return location
+      end
+    end
+  end
+
+  def pick_second_move(board)
+    if board.has_at?(self.marker,4)
+      SIDE_CHOICES.each do |location|
+        if board.valid_location?(location)
+          return location
+        end
+      end
+    else
+      CORNER_CHOICES.each do |location|
+        if board.valid_location?(location)
+          return location
+        end
+      end
+    end
+  end
+
+  def choose_location(board)
+    appear_to_be_thinking
+
+    first_priority = avoid_defeat_or_win_game_choice(board)
+    if first_priority != nil
+      return first_priority
+    end
+
+    if first_move?(board)
+      return pick_first_move(board)
+    end
+
+    if second_move?(board)
+      return pick_second_move(board)
+    end
+
+    tactical_choice = tactical_choice(board)
+    if tactical_choice != nil
+      return tactical_choice
+    end
+
+    return leftover_move_choice(board)
+  end
 end

@@ -1,9 +1,9 @@
 require_relative 'spec_helper'
 
-describe HumanPlayer do
+describe ComputerPlayer do
 
   before :each do
-    @player = HumanPlayer.new
+    @player = ComputerPlayer.new
   end
 
   describe "::new" do
@@ -12,7 +12,7 @@ describe HumanPlayer do
     end
 
     it "creates a new computer player object" do
-      expect(@player).to be_a HumanPlayer
+      expect(@player).to be_a ComputerPlayer
     end
 
     it "initializes a marker instance variable to nil" do
