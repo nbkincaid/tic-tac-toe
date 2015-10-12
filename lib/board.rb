@@ -1,5 +1,7 @@
 class Board
 
+  attr_reader :squares
+
   SEQUENCES = [ [0,1,2],
                 [3,4,5],
                 [6,7,8],
@@ -15,11 +17,11 @@ class Board
   end
 
   def state
-    @squares
+    self.squares
   end
 
   def clear_state
-    @squares.map do |square|
+    self.squares.map do |square|
       if square =~ /[[:alpha:]]/
         square
       else
@@ -30,30 +32,29 @@ class Board
 
   def place_marker(location, marker)
     if valid_location?(location) && valid_marker?(marker)
-      @squares[location] = marker
+      self.squares[location] = marker
       true
-
     else
       false
     end
   end
 
   def three_in_a_row?
-    ( [@squares[0], @squares[1], @squares[2]].uniq.length == 1 ||
-      [@squares[3], @squares[4], @squares[5]].uniq.length == 1 ||
-      [@squares[6], @squares[7], @squares[8]].uniq.length == 1 ||
-      [@squares[0], @squares[3], @squares[6]].uniq.length == 1 ||
-      [@squares[1], @squares[4], @squares[7]].uniq.length == 1 ||
-      [@squares[2], @squares[5], @squares[8]].uniq.length == 1 ||
-      [@squares[0], @squares[4], @squares[8]].uniq.length == 1 ||
-      [@squares[2], @squares[4], @squares[6]].uniq.length == 1
-    ) && @squares.uniq != [nil]
+    ( [self.squares[0], self.squares[1], self.squares[2]].uniq.length == 1 ||
+      [self.squares[3], self.squares[4], self.squares[5]].uniq.length == 1 ||
+      [self.squares[6], self.squares[7], self.squares[8]].uniq.length == 1 ||
+      [self.squares[0], self.squares[3], self.squares[6]].uniq.length == 1 ||
+      [self.squares[1], self.squares[4], self.squares[7]].uniq.length == 1 ||
+      [self.squares[2], self.squares[5], self.squares[8]].uniq.length == 1 ||
+      [self.squares[0], self.squares[4], self.squares[8]].uniq.length == 1 ||
+      [self.squares[2], self.squares[4], self.squares[6]].uniq.length == 1
+    ) && self.squares.uniq != [nil]
   end
 
   def three_in_a_row_marker
 
     SEQUENCES.each do |seq|
-      sequence_vals = [ @squares[seq[0]], @squares[seq[1]], @squares[seq[2]] ].uniq
+      sequence_vals = [ self.squares[seq[0]], self.squares[seq[1]], self.squares[seq[2]] ].uniq
 
       if sequence_vals.length == 1
         return sequence_vals[0]
@@ -66,24 +67,24 @@ class Board
   end
 
   def squares_empty?
-    @squares.uniq.all? {|marker| !(marker =~ /[[:alpha:]]/)}
+    self.squares.uniq.all? {|marker| !(marker =~ /[[:alpha:]]/)}
   end
 
   def squares_full?
-    square_content_uniqs = @squares.uniq
+    square_content_uniqs = self.squares.uniq
     square_content_uniqs.length == 2 && square_content_uniqs.all? {|marker| marker =~ /[[:alpha:]]/}
   end
 
   def squares_contain?(marker)
-    @squares.include?(marker)
+    self.squares.include?(marker)
   end
 
   def has_at?(marker,location)
-    @squares[location] == marker
+    self.squares[location] == marker
   end
 
   def count_marker(marker)
-    @squares.count(marker)
+    self.squares.count(marker)
   end
 
   def most_eligible_square
@@ -91,7 +92,7 @@ class Board
     candidate_vals = []
 
     SEQUENCES.each do |seq|
-      sequence_vals = [ @squares[seq[0]], @squares[seq[1]], @squares[seq[2]] ].uniq
+      sequence_vals = [ self.squares[seq[0]], self.squares[seq[1]], self.squares[seq[2]] ].uniq
 
       if (sequence_vals.uniq.count) == 3 && (sequence_vals.count {|val| val =~ /\A\d+\Z/ }) == 2
         numerical_digits = sequence_vals.select {|val| val =~ /\A\d+\Z/ }
@@ -111,7 +112,7 @@ class Board
   def sequence_filler_square
 
     SEQUENCES.each do |seq|
-      sequence_vals = [ @squares[seq[0]], @squares[seq[1]], @squares[seq[2]] ].uniq
+      sequence_vals = [ self.squares[seq[0]], self.squares[seq[1]], self.squares[seq[2]] ].uniq
 
       if sequence_vals.length == 2 && sequence_vals.any? {|val| val =~ /\A\d+\Z/ }
         sequence_filler_square = sequence_vals.find {|val| val =~ /\A\d+\Z/ }
@@ -150,7 +151,7 @@ class Board
   end
 
   def unoccupied_square?(location)
-    if !(@squares[location] =~ /[[:alpha:]]/)
+    if !(self.squares[location] =~ /[[:alpha:]]/)
       true
     else
       false

@@ -6,7 +6,7 @@ describe Board do
     @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
   end
 
-  describe "#new" do
+  describe "::initialize" do
     it "returns a new board object with 0 input parameters" do
       expect(@board).to be_a Board
     end
@@ -15,7 +15,7 @@ describe Board do
       expect(@board).to be_a Board
     end
 
-    it "initializes an array variable for the input board input array" do
+    it "initializes an array instance variable for the board input array" do
       @board = Board.new(["X","O","X","O","X","O","X","O","X"])
       expect(@board.state).to eq(["X","O","X","O","X","O","X","O","X"])
     end
@@ -24,6 +24,12 @@ describe Board do
   describe "#state" do
     it "returns an array representating the state of the squares" do
       expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+    end
+  end
+
+  describe "#squares" do
+    it "returns the squares instance variable" do
+      expect(@board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     end
   end
 
