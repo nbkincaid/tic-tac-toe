@@ -7,6 +7,30 @@ class ComputerPlayer < Player
   CORNER_CHOICES = [0,8,2,6]
   LEFTOVER_MOVE_CHOICES = [4,0,8,2,6,1,3,5,7]
 
+  def choose_location(board)
+    appear_to_be_thinking
+
+    first_priority = avoid_defeat_or_win_game_choice(board)
+    if first_priority != nil
+      return first_priority
+    end
+
+    if first_move?(board)
+      return pick_first_move(board)
+    end
+
+    if second_move?(board)
+      return pick_second_move(board)
+    end
+
+    tactical_choice = tactical_choice(board)
+    if tactical_choice != nil
+      return tactical_choice
+    end
+
+    return leftover_move_choice(board)
+  end
+
   def appear_to_be_thinking
     sleep(2)
   end
@@ -59,27 +83,4 @@ class ComputerPlayer < Player
     end
   end
 
-  def choose_location(board)
-    appear_to_be_thinking
-
-    first_priority = avoid_defeat_or_win_game_choice(board)
-    if first_priority != nil
-      return first_priority
-    end
-
-    if first_move?(board)
-      return pick_first_move(board)
-    end
-
-    if second_move?(board)
-      return pick_second_move(board)
-    end
-
-    tactical_choice = tactical_choice(board)
-    if tactical_choice != nil
-      return tactical_choice
-    end
-
-    return leftover_move_choice(board)
-  end
 end
