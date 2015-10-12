@@ -74,6 +74,40 @@ class Board
     square_content_uniqs.length == 2 && square_content_uniqs.all? {|marker| marker =~ /[[:alpha:]]/}
   end
 
+  def squares_contain?(marker)
+    @squares.include?(marker)
+  end
+
+  def has_at?(marker,location)
+    @squares[location] == marker
+  end
+
+  def count_marker(marker)
+    @squares.count(marker)
+  end
+
+  def most_eligible_square
+
+    candidate_vals = []
+
+    SEQUENCES.each do |seq|
+      sequence_vals = [ @squares[seq[0]], @squares[seq[1]], @squares[seq[2]] ].uniq
+
+      if (sequence_vals.uniq.count) == 3 && (sequence_vals.count {|val| val =~ /\A\d+\Z/ }) == 2
+        numerical_digits = sequence_vals.select {|val| val =~ /\A\d+\Z/ }
+        numerical_digits.each {|val| candidate_vals << val}
+      end
+    end
+
+    if (candidate_vals.length != 0)  && (candidate_vals.length != candidate_vals.uniq.length)
+      most_eligible_square = candidate_vals.max_by{|val| candidate_vals.count(val) }
+      most_eligible_square.to_i
+    else
+      nil
+    end
+
+  end
+
   def sequence_filler_square
 
     SEQUENCES.each do |seq|

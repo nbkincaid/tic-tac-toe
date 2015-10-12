@@ -53,7 +53,9 @@ class Game
 
       last_move_communication
 
-      @view.get_move_msg(@current_player.marker)
+      if @current_player.class == HumanPlayer
+        @view.get_move_msg(@current_player.marker)
+      end
 
       move_location = get_move_location(@current_player)
 
