@@ -65,9 +65,28 @@ class Board
 
   end
 
+  def squares_empty?
+    @squares.uniq.all? {|marker| !(marker =~ /[[:alpha:]]/)}
+  end
+
   def squares_full?
     square_content_uniqs = @squares.uniq
     square_content_uniqs.length == 2 && square_content_uniqs.all? {|marker| marker =~ /[[:alpha:]]/}
+  end
+
+  def sequence_filler_square
+
+    SEQUENCES.each do |seq|
+      sequence_vals = [ @squares[seq[0]], @squares[seq[1]], @squares[seq[2]] ].uniq
+
+      if sequence_vals.length == 2 && sequence_vals.any? {|val| val =~ /\A\d+\Z/ }
+        sequence_filler_square = sequence_vals.find {|val| val =~ /\A\d+\Z/ }
+        return sequence_filler_square.to_i
+      end
+    end
+
+    nil
+
   end
 
   # *********************************************************

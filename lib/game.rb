@@ -1,6 +1,7 @@
 require_relative 'board'
 require_relative 'game_view'
 require_relative 'human_player'
+require_relative 'computer_player'
 
 class Game
   def initialize
@@ -98,7 +99,8 @@ class Game
         return get_move_location(player)
       end
 
-    # else if(player.class == ComputerPlayer)
+    elsif(player.class == ComputerPlayer)
+      return player.choose_location(@board)
     end
   end
 
@@ -148,14 +150,14 @@ class Game
     when 1
       @players << HumanPlayer.new
       @players << HumanPlayer.new
-    # when 2
-    #   @players << HumanPlayer.new
-    #   @players << ComputerPlayer.new
-    # when 3
-    #   @players << ComputerPlayer.new
-    #   @players << ComputerPlayer.new
+    when 2
+      @players << HumanPlayer.new
+      @players << ComputerPlayer.new
+    when 3
+      @players << ComputerPlayer.new
+      @players << ComputerPlayer.new
     else
-
+      nil
     end
 
   end

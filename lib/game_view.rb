@@ -54,7 +54,7 @@ class GameView
   end
 
   def winner_msg(winner_marker)
-     puts "\nCongratulations #{winner_marker}, you win!"
+     puts "\n#{winner_marker}, wins!"
   end
 
   def cat_game_msg
