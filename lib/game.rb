@@ -49,7 +49,7 @@ class Game
   def play_loop
     until game_over?
       @view.clear
-      @view.show_board(@board.state)
+      @view.show_board(@board.squares)
 
       last_move_communication
 

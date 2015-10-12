@@ -26,10 +26,8 @@ class ComputerPlayer < Player
       return priority_choice
     end
 
-    # get board count of self marker
     board_marker_count = board.count_marker(self.marker)
 
-    # laid 0 markers:
     if board_marker_count == 0
       [4,0].each do |location|
         if board.valid_location?(location)
@@ -53,25 +51,6 @@ class ComputerPlayer < Player
         end
       end
     end
-
-
-    # if board.squares_empty?
-    #   move_choices = GO_FIRST_MOVES
-    #   move_choices.each do |location|
-    #     if board.valid_location?(location)
-    #       return location
-    #     end
-    #   end
-    # end
-
-    # if board.squares_empty? == false && board.squares_contain?(self.marker) == false
-    #   move_choices = GO_SECOND_MOVES
-    #   move_choices.each do |location|
-    #     if board.valid_location?(location)
-    #       return location
-    #     end
-    #   end
-    # end
 
     tactical_choice = board.most_eligible_square
     if tactical_choice != nil

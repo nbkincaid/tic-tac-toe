@@ -17,13 +17,7 @@ describe Board do
 
     it "initializes an array instance variable for the board input array" do
       @board = Board.new(["X","O","X","O","X","O","X","O","X"])
-      expect(@board.state).to eq(["X","O","X","O","X","O","X","O","X"])
-    end
-  end
-
-  describe "#state" do
-    it "returns an array representating the state of the squares" do
-      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+      expect(@board.squares).to eq(["X","O","X","O","X","O","X","O","X"])
     end
   end
 
@@ -34,7 +28,7 @@ describe Board do
   end
 
   describe "#clear_state" do
-    it "returns an array representating the state of the squares without the numbers" do
+    it "returns an array representating the squares of the squares without the numbers" do
       board = Board.new(["X", "X", "X", "O", "O", "5", "6", "7", "8"])
       expect(board.clear_state).to eq(["X", "X", "X", "O", "O", " ", " ", " ", " "])
     end
@@ -43,18 +37,28 @@ describe Board do
   describe "#place_marker" do
     it "should place a specified marker on a specified spot" do
       @board.place_marker(7, "X")
-      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "X", "8"])
+      expect(@board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "X", "8"])
     end
 
     it "shouldn't place a marker for an invalid location" do
       @board.place_marker(10, "X")
-      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+      expect(@board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     end
 
     it "shouldn't place a marker for an invalid marker" do
       @board.place_marker(10, "XO")
-      expect(@board.state).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+      expect(@board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     end
+
+    it "should return true when a marker is placed" do
+      expect(@board.place_marker(7, "X")).to eq(true)
+    end
+
+    it "shoudl return false when a marker is not placed" do
+      @board.place_marker(10, "XO")
+      expect(@board.place_marker(10, "XO")).to eq(false)
+    end
+
   end
 
   describe "#three_in_a_row?" do
@@ -115,6 +119,50 @@ describe Board do
     end
   end
 
+  describe "#three_in_row_marker" do
+    it "should return the correct marker for a top row three in a row sequence" do
+      board = Board.new(["O","1","X","O","4","5","O","7","X"])
+      expect(board.three_in_a_row_marker).to eq("O")
+    end
+
+    it "should return the correct marker for a right diagonal three in a row sequence" do
+      board = Board.new(["X","X","O","3","O","5","O","7","8"])
+      expect(board.three_in_a_row_marker).to eq("O")
+    end
+
+    it "should return nil for no match in an empty board" do
+      board = Board.new(["X","X","O","O","4","5","O","7","8"])
+      expect(board.three_in_a_row_marker).to eq(nil)
+    end
+
+    it "should return nil for no match in a full board" do
+      board = Board.new([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+      expect(board.three_in_a_row_marker).to eq(nil)
+    end
+
+  end
+
+  describe "#squares_empty?" do
+    it "should return true for a board with only numerical characters" do
+      expect(@board.squares_empty?).to eq (true)
+    end
+
+    it "should return true for an empty board" do
+      board = Board.new([nil,nil,nil,nil,nil,nil,nil,nil,nil])
+      expect(board.squares_empty?).to eq(true)
+    end
+
+    it "should return false for board with one alphabetical character" do
+      @board.place_marker(2, "X")
+      expect(@board.squares_empty?).to eq (false)
+    end
+
+    it "should return false for a board with all alphabetical characters" do
+      board = Board.new(["X","O","X","O","X","O","X","O","X"])
+      expect(board.squares_empty?).to eq(false)
+    end
+
+  end
 
   describe "#squares_full?" do
     it "should return true for a count of 0 'numerical' values" do
@@ -127,27 +175,68 @@ describe Board do
       expect(board.squares_full?).to eq(false)
     end
 
+    it "should return false for all numerical values" do
+      expect(@board.squares_full?).to eq(false)
+    end
+
     it "should return false for all nil values" do
       board = Board.new([nil,nil,nil,nil,nil,nil,nil,nil,nil])
       expect(board.squares_full?).to eq(false)
     end
   end
 
-  describe "#three_in_row_marker" do
-    it "should return the correct marker for a top row three in a row sequence" do
-      board = Board.new(["O","1","X","O","4","5","O","7","X"])
-      expect(board.three_in_a_row_marker).to eq("O")
+  describe "#has_at?" do
+    it "should return true when the specified square contains the specified character" do
+      board = Board.new([nil,nil,nil,"P",nil,nil,nil,nil,nil])
+      expect(board.has_at?("P", 3)).to eq(true)
     end
 
-    it "should return the correct marker for a right diagonal three in a row sequence" do
-      board = Board.new(["X","X","O","3","O","5","O","7","8"])
-      expect(board.three_in_a_row_marker).to eq("O")
+    it "should return false when the squares do not contain the input character" do
+      board = Board.new([nil,nil,nil,"P",nil,nil,nil,nil,nil])
+      expect(board.has_at?("P", 4)).to eq(false)
+    end
+  end
+
+  describe "#count_marker" do
+    it "should count the correct number of a given marker when there is more than 0" do
+      board = Board.new(["X","O","X","O","4","O","X","O","X"])
+      expect(board.count_marker("O")).to eq(4)
+    end
+
+    it "should count the correct number of a given marker when there is 0" do
+      board = Board.new([nil,nil,nil,"P",nil,nil,nil,nil,nil])
+      expect(board.count_marker("O")).to eq(0)
+    end
+  end
+
+  describe "#most_eligible_square" do
+    it "should return the numerical value of the first square that is in the most sequences with only 1 alpha character for the condition that at least one square exists in at least two of such sequences" do
+      board = Board.new(["X", "1", "2", "3", "X", "5", "6", "7", "X"])
+      expect(board.most_eligible_square).to eq(2)
+    end
+
+    it "should return nil when there isn't any square that exists in at least two sequences that such the there are only one alpha character" do
+      board = Board.new(["0", "1", "2", "X", "4", "X", "6", "7", "8"])
+      expect(board.most_eligible_square).to eq(nil)
+    end
+
+  end
+
+  describe "#sequence_filler_square" do
+    it "should return the numerical value of the space that is the third square to complete a sequence" do
+      board = Board.new(["X", "1", "2", "X", "4", "5", "6", "7", "8"])
+      expect(board.sequence_filler_square).to eq(6)
+    end
+
+    it "should provide the numerical value of the space that is the third square to complete a sequence" do
+      board = Board.new(["X", "1", "2", "3", "4", "X", "6", "7", "8"])
+      expect(board.sequence_filler_square).to eq(nil)
     end
 
   end
 
   describe "#valid_marker?" do
-    it "returns true for a string of length 1" do
+    it "returns true for an alphabetical string of length 1" do
       expect(@board.valid_marker?("O")).to eq(true)
     end
 
@@ -157,6 +246,10 @@ describe Board do
 
     it "returns false for a string of length other than 1" do
       expect(@board.valid_marker?("XX")).to eq(false)
+    end
+
+    it "returns false for an numeric string" do
+      expect(@board.valid_marker?("6")).to eq(false)
     end
   end
 
@@ -185,7 +278,7 @@ describe Board do
   end
 
   describe "#unoccupied_square?" do
-    it "returns true for a square that's unoccupied" do
+    it "returns true for a square that does not have an alpha marker" do
       expect(@board.unoccupied_square?(3)).to eq(true)
     end
 

@@ -13,11 +13,7 @@ class Board
               ]
 
   def initialize(squares = nil)
-    @squares = squares || Array.new(9)
-  end
-
-  def state
-    self.squares
+    @squares = squares || ["0", "1", "2", "3", "4", "5", "6", "7", "8"] #Array.new(9)
   end
 
   def clear_state
@@ -75,10 +71,6 @@ class Board
     square_content_uniqs.length == 2 && square_content_uniqs.all? {|marker| marker =~ /[[:alpha:]]/}
   end
 
-  def squares_contain?(marker)
-    self.squares.include?(marker)
-  end
-
   def has_at?(marker,location)
     self.squares[location] == marker
   end
@@ -124,10 +116,8 @@ class Board
 
   end
 
-  # *********************************************************
-
   def valid_marker?(marker)
-    if (marker.is_a? String) && (marker.length == 1)
+    if (marker.is_a? String) && (marker.length == 1) && marker =~ /[[:alpha:]]/
       true
     else
       false
