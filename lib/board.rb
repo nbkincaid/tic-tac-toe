@@ -13,7 +13,7 @@ class Board
               ]
 
   def initialize(squares = nil)
-    @squares = squares || ["0", "1", "2", "3", "4", "5", "6", "7", "8"] #Array.new(9)
+    @squares = squares || ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
   end
 
   def clear_state

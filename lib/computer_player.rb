@@ -19,7 +19,7 @@ class ComputerPlayer < Player
   end
 
   def choose_location(board)
-    sleep(3)
+    sleep(2)
 
     priority_choice = board.sequence_filler_square
     if priority_choice != nil

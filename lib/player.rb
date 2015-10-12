@@ -3,7 +3,7 @@ class Player
   attr_reader :marker
 
   def initialize
-    @marker
+    @marker = nil
   end
 
   def set_marker(marker)
@@ -22,7 +22,5 @@ class Player
       false
     end
   end
-
-
 
 end
