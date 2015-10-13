@@ -6,8 +6,11 @@ require_relative 'computer_player'
 
 class GameController
   def initialize
-    @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+
+    @model = GameModel.new
     @view = GameView.new
+
+    @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     @players = []
     @moves = []
     @current_player = nil
