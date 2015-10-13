@@ -36,7 +36,7 @@ class ComputerPlayer < Player
   end
 
   def avoid_defeat_or_win_game_choice(board)
-    choice = board.sequence_filler_square
+    board.sequence_filler_square
   end
 
   def tactical_choice(board)
@@ -65,6 +65,7 @@ class ComputerPlayer < Player
         return location
       end
     end
+    nil
   end
 
   def pick_second_move(board)
