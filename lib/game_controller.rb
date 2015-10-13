@@ -1,9 +1,10 @@
-require_relative 'board'
+require_relative 'game_model'
 require_relative 'game_view'
+require_relative 'board'
 require_relative 'human_player'
 require_relative 'computer_player'
 
-class Game
+class GameController
   def initialize
     @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
     @view = GameView.new
@@ -223,5 +224,5 @@ class Game
 
 end
 
-game = Game.new
+game = GameController.new
 game.play_game
