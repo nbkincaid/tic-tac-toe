@@ -11,11 +11,6 @@ class GameController
   def initialize
     @model = GameModel.new
     @view = GameView.new
-
-    # @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
-    # @players = []
-    # @moves = []
-    # @current_player = nil
   end
 
   def play_game
@@ -83,17 +78,6 @@ class GameController
     end
   end
 
-  # def switch_player
-  #   current_player_index = @players.index(@current_player)
-
-  #   if current_player_index == 0
-  #     @current_player = @players[1]
-  #   elsif current_player_index == 1
-  #     @current_player = @players[0]
-  #   end
-
-  # end
-
   def get_move_location(player)
 
     if player.class == HumanPlayer
@@ -113,17 +97,6 @@ class GameController
       return player.choose_location(self.model.board)
     end
   end
-
-  # def validate_move_location(move_location)
-  #   is_numeric_status = (move_location =~ /\A\d+\Z/)
-  #   is_valid_status = @board.valid_location?(move_location.to_i)
-
-  #   is_numeric_status && is_valid_status
-  # end
-
-  # def store_move(player, location)
-  #   @moves << {player: player, location: location}
-  # end
 
   def get_game_type_input
 
@@ -160,18 +133,13 @@ class GameController
     when 1
       self.model.add_human_player
       self.model.add_human_player
-      # @players << HumanPlayer.new
-      # @players << HumanPlayer.new
+
     when 2
       self.model.add_human_player
       self.model.add_computer_player
-      # @players << HumanPlayer.new
-      # @players << ComputerPlayer.new
     when 3
       self.model.add_computer_player
       self.model.add_computer_player
-      # @players << ComputerPlayer.new
-      # @players << ComputerPlayer.new
     else
       nil
     end
@@ -214,10 +182,6 @@ class GameController
     end
   end
 
-  # def find_player_by_marker(marker)
-  #   @players.find{|player| player.marker == marker}
-  # end
-
   def get_first_player_input
     marker = get_input
 
@@ -230,10 +194,6 @@ class GameController
       get_first_player_input
     end
   end
-
-  # def game_over?
-  #   @board.three_in_a_row? || @board.squares_full?
-  # end
 
 end
 

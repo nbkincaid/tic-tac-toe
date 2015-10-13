@@ -4,9 +4,9 @@ class GameModel
 
   def initialize
     @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+    @current_player = nil
     @players = []
     @moves = []
-    @current_player = nil
   end
 
   def switch_player
@@ -20,9 +20,6 @@ class GameModel
 
   end
 
-  def store_move(player, location)
-    self.moves << {player: player, location: location}
-  end
   def final_board_state
     self.board.clear_state
   end
