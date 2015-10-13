@@ -9,6 +9,20 @@ class GameModel
     @current_player = nil
   end
 
+  def switch_player
+    current_player_index = self.players.index(self.current_player)
+
+    if current_player_index == 0
+      self.current_player = self.players[1]
+    elsif current_player_index == 1
+      self.current_player = self.players[0]
+    end
+
+  end
+
+  def store_move(player, location)
+    self.moves << {player: player, location: location}
+  end
   def final_board_state
     self.board.clear_state
   end
@@ -17,7 +31,7 @@ class GameModel
     self.board.three_in_a_row?
   end
 
-  def winner
+  def winner_marker
     self.board.three_in_a_row_marker
   end
 
@@ -36,8 +50,8 @@ class GameModel
     is_numeric_status && is_valid_status
   end
 
-  def store_move(player, location)
-    self.moves << {player: player, location: location}
+  def store_move(location)
+    self.moves << {player: self.current_player, location: location}
   end
 
   def add_human_player
@@ -45,7 +59,7 @@ class GameModel
   end
 
   def add_computer_player
-    add_computer_player << ComputerPlayer.new
+    self.players <<  ComputerPlayer.new
   end
 
   def get_player_by_marker(marker)

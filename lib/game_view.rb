@@ -50,7 +50,7 @@ class GameView
   end
 
   def winner_msg(winner_marker)
-     puts "\n\t#{winner_marker}, wins!"
+     puts "\n\t#{winner_marker} wins!"
   end
 
   def cat_game_msg
