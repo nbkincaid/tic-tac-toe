@@ -70,17 +70,9 @@ class ComputerPlayer < Player
 
   def pick_second_move(board)
     if board.has_at?(self.marker,4)
-      SIDE_CHOICES.each do |location|
-        if board.valid_location?(location)
-          return location
-        end
-      end
+      SIDE_CHOICES.select {|location| board.valid_location?(location)}[0]
     else
-      CORNER_CHOICES.each do |location|
-        if board.valid_location?(location)
-          return location
-        end
-      end
+      CORNER_CHOICES.select {|location| board.valid_location?(location)}[0]
     end
   end
 
