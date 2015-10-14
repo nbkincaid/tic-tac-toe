@@ -39,11 +39,78 @@ class GameController
 
   end
 
-  def result_communication
-    if self.model.winner_exists?
-      self.view.winner_msg(self.model.winner_marker)
+  def get_input
+    gets.chomp
+  end
+
+  def get_game_type_input
+
+    game_type = get_input
+
+    if valid_game_type?(game_type)
+      set_game_type(game_type)
     else
-      self.view.cat_game_msg
+      puts self.view.retry_input_msg
+      get_game_type_input
+    end
+
+  end
+
+  def set_game_type(type)
+
+    case type.to_i
+
+    when 1
+      self.model.add_human_player
+      self.model.add_human_player
+
+    when 2
+      self.model.add_human_player
+      self.model.add_computer_player
+    when 3
+      self.model.add_computer_player
+      self.model.add_computer_player
+    else
+      nil
+    end
+
+  end
+
+  def get_player_markers_input
+    self.model.players.each_with_index do |player,i|
+      player_number = i+1
+      self.view.select_player_marker_msg(player_number, player.class)
+      get_player_marker_input_for(player)
+    end
+  end
+
+  def get_player_marker_input_for(player)
+    while player.marker == nil
+      player_marker = get_input
+
+      if is_a_duplicate_marker?(player_marker)
+        self.view.already_selected_msg
+        get_player_marker_input_for(player)
+      else
+        valid = player.set_marker(player_marker)
+
+        unless valid
+          self.view.retry_input_msg
+        end
+      end
+    end
+  end
+
+  def get_first_player_input
+    marker = get_input
+
+    player = self.model.get_player_by_marker(marker)
+
+    if player != nil
+      self.model.current_player = player
+    else
+      self.view.retry_input_msg
+      get_first_player_input
     end
   end
 
@@ -99,21 +166,12 @@ class GameController
     end
   end
 
-  def get_game_type_input
-
-    game_type = get_input
-
-    if valid_game_type?(game_type)
-      set_game_type(game_type)
+  def result_communication
+    if self.model.winner_exists?
+      self.view.winner_msg(self.model.winner_marker)
     else
-      puts self.view.retry_input_msg
-      get_game_type_input
+      self.view.cat_game_msg
     end
-
-  end
-
-  def get_input
-    gets.chomp
   end
 
   def valid_game_type?(input)
@@ -126,72 +184,12 @@ class GameController
     end
   end
 
-  def set_game_type(type)
-
-    case type.to_i
-
-    when 1
-      self.model.add_human_player
-      self.model.add_human_player
-
-    when 2
-      self.model.add_human_player
-      self.model.add_computer_player
-    when 3
-      self.model.add_computer_player
-      self.model.add_computer_player
-    else
-      nil
-    end
-
-  end
-
-  def get_player_markers_input
-    self.model.players.each_with_index do |player,i|
-      player_number = i+1
-      self.view.select_player_marker_msg(player_number, player.class)
-      get_player_marker_input_for(player)
-    end
-  end
-
-  def get_player_marker_input_for(player)
-
-    while player.marker == nil
-      player_marker = get_input
-
-      if is_a_duplicate_marker?(player_marker)
-        self.view.already_selected_msg
-        get_player_marker_input_for(player)
-      else
-        valid = player.set_marker(player_marker)
-
-        unless valid
-          self.view.retry_input_msg
-        end
-      end
-    end
-
-  end
-
   def is_a_duplicate_marker?(player_marker)
     search_result = model.get_player_by_marker(player_marker)
     if search_result == nil
       false
     else
       true
-    end
-  end
-
-  def get_first_player_input
-    marker = get_input
-
-    player = self.model.get_player_by_marker(marker)
-
-    if player != nil
-      self.model.current_player = player
-    else
-      self.view.retry_input_msg
-      get_first_player_input
     end
   end
 
