@@ -22,7 +22,6 @@ describe Player do
       expect(@player.marker).to eq("T")
     end
 
-
     it "should return true when the marker gets set" do
       expect(@player.set_marker("A")).to eq(true)
     end

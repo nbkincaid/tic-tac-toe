@@ -6,6 +6,7 @@ require_relative 'computer_player'
 
 class GameController
 
+  attr_reader :ui
   attr_accessor :model, :view
 
   def initialize
@@ -50,11 +51,12 @@ class GameController
   def play_loop
     until self.model.game_over?
       self.view.clear
+
+      self.view.current_turn_msg(self.model.current_player.marker)
+
       self.view.show_board(self.model.board_content)
 
-
       last_move_communication
-
 
       if self.model.current_player.class == HumanPlayer
         self.view.get_move_msg(self.model.current_player.marker)
@@ -197,5 +199,3 @@ class GameController
 
 end
 
-game = GameController.new
-game.play_game

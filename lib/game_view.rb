@@ -49,6 +49,10 @@ class GameView
     puts "\nThe last move was placed in space #{location} by #{marker}"
   end
 
+  def current_turn_msg(marker)
+    puts "\nCurrent Turn: Player #{marker}\n\n"
+  end
+
   def winner_msg(winner_marker)
      puts "\n\t#{winner_marker} wins!"
   end
