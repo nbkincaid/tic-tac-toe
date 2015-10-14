@@ -6,7 +6,6 @@ require_relative 'computer_player'
 
 class GameController
 
-  attr_reader :ui
   attr_accessor :model, :view
 
   def initialize
@@ -126,7 +125,6 @@ class GameController
       return false
     end
   end
-
 
   def set_game_type(type)
 
