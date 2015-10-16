@@ -13,32 +13,27 @@ class GameView
   end
 
   def select_player_marker_msg(player_number, player_type)
-    puts "\nPlease choose an alphabetical character for player #{player_number}, #{player_type}."
-  end
-
-  def input_thank_you_msg
-    puts "Thank you for the input."
+    "\nPlease choose an alphabetical character for player #{player_number}, #{player_type}."
   end
 
   def already_selected_msg
-    puts "Sorry, that marker has already been chosen, please choose again."
+    "Sorry, that marker has already been chosen, please choose again."
   end
 
   def retry_input_msg
-    puts "Sorry, that input is not valid, please try again."
+    "Sorry, that input is not valid, please try again."
   end
 
   def get_first_player_msg(player_marker_1, player_marker_2)
-    puts "\nWhich player would you like to go first?"
-    puts "\t #{player_marker_1} or #{player_marker_2}?"
+    "\nWhich player would you like to go first?\n\t #{player_marker_1} or #{player_marker_2}?"
   end
 
   def show_board(board)
-    puts "\t #{board[0]} | #{board[1]} | #{board[2]}\n\t-----------\n\t #{board[3]} | #{board[4]} | #{board[5]}\n\t-----------\n\t #{board[6]} | #{board[7]} | #{board[8]}"
+    "\t #{board[0]} | #{board[1]} | #{board[2]}\n\t-----------\n\t #{board[3]} | #{board[4]} | #{board[5]}\n\t-----------\n\t #{board[6]} | #{board[7]} | #{board[8]}"
   end
 
   def get_move_msg(marker)
-     puts "\nPlayer #{marker}, please enter where you would like to move."
+     "\nPlayer #{marker}, please enter where you would like to move."
   end
 
   def move_msg(location, marker)
@@ -46,7 +41,7 @@ class GameView
   end
 
   def current_turn_msg(marker)
-    puts "\nCurrent Turn: Player #{marker}\n\n"
+    "\nCurrent Turn: Player #{marker}\n\n"
   end
 
   def winner_msg(winner_marker)

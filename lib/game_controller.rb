@@ -24,21 +24,24 @@ class GameController
     game_type = get_game_type
     set_game_type(game_type)
 
-   ui.give(view.clear)
+    ui.give(view.clear)
 
     get_player_markers_input
 
-    view.get_first_player_msg(model.players[0].marker, model.players[1].marker)
+
+    message = view.get_first_player_msg(model.players[0].marker, model.players[1].marker)
+    ui.give(message)
+
     get_first_player_input
 
     play_loop
 
-   ui.give(view.clear)
-    view.show_board(model.final_board_state)
+    ui.give(view.clear)
+    ui.give(view.show_board(model.final_board_state))
 
     result_communication
 
-   ui.give(view.thank_you_msg)
+    ui.give(view.thank_you_msg)
 
   end
 
@@ -50,7 +53,7 @@ class GameController
     if valid_game_type?(game_type)
       game_type
     else
-      puts view.retry_input_msg
+      ui.give(view.retry_input_msg)
       get_game_type
     end
   end
@@ -78,7 +81,8 @@ class GameController
   def get_player_markers_input
     model.players.each_with_index do |player,i|
       player_number = i+1
-      view.select_player_marker_msg(player_number, player.class)
+      message = view.select_player_marker_msg(player_number, player.class)
+      ui.give(message)
       get_player_marker_input_for(player)
     end
   end
@@ -88,13 +92,13 @@ class GameController
       player_marker = get_input
 
       if is_a_duplicate_marker?(player_marker)
-        view.already_selected_msg
+        ui.give(view.already_selected_msg)
         get_player_marker_input_for(player)
       else
         valid = player.set_marker(player_marker)
 
         unless valid
-          view.retry_input_msg
+          ui.give(view.retry_input_msg)
         end
       end
     end
@@ -107,25 +111,25 @@ class GameController
     if player != nil
       model.current_player = player
     else
-      view.retry_input_msg
+      ui.give(view.retry_input_msg)
       get_first_player_input
     end
   end
 
   def play_loop
     until model.game_over?
-     ui.give(view.clear)
+      ui.give(view.clear)
 
-     ui.give(view.current_turn_msg(model.current_player.marker))
+      ui.give(view.current_turn_msg(model.current_player.marker))
 
-      view.show_board(model.board_content)
+      ui.give(view.show_board(model.board_content))
 
       last_move_communication
 
       if model.current_player.class == HumanPlayer
         marker = model.current_player.marker
         message = view.get_move_msg(marker)
-       ui.give(message)
+        ui.give(message)
       end
 
       move_location = get_move_location(model.current_player)
@@ -157,7 +161,7 @@ class GameController
       if valid_status
         return move_location.to_i
       else
-        view.retry_input_msg
+        ui.give(view.retry_input_msg)
         return get_move_location(player)
       end
 
