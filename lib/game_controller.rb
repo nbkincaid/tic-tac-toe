@@ -28,7 +28,6 @@ class GameController
 
     get_player_markers_input
 
-
     message = view.get_first_player_msg(model.players[0].marker, model.players[1].marker)
     ui.give(message)
 
@@ -45,7 +44,10 @@ class GameController
 
   end
 
-  def get_game_type(game_type = ui.receive)
+  def get_game_type(game_type = ui.receive.to_i)
+
+    game_type = game_type.to_i
+
     if valid_game_type?(game_type)
       game_type
     else

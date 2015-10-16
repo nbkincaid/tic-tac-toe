@@ -18,8 +18,9 @@ describe GameController do
   end
 
   describe "#get_game_type" do
-    it "returns the the game type if valid" do
-
+    it "returns the integer, 1, if 1 is chosen" do
+      allow(STDIN).to receive(:gets) { "1" }
+      expect(@controller.get_game_type).to eq(1)
     end
   end
 
