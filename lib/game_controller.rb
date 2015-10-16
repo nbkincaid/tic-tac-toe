@@ -55,21 +55,6 @@ class GameController
     end
   end
 
-
-
-  # def get_game_type_input(game_type_input)
-
-  #   game_type = game_type_input
-
-  #   if valid_game_type?(game_type)
-  #     set_game_type(game_type)
-  #   else
-  #     puts self.view.retry_input_msg
-  #     get_game_type_input
-  #   end
-
-  # end
-
   def set_game_type(type)
 
     case type.to_i
@@ -131,14 +116,16 @@ class GameController
     until self.model.game_over?
       self.ui.give(self.view.clear)
 
-      self.view.current_turn_msg(self.model.current_player.marker)
+      self.ui.give(self.view.current_turn_msg(self.model.current_player.marker))
 
       self.view.show_board(self.model.board_content)
 
       last_move_communication
 
       if self.model.current_player.class == HumanPlayer
-        self.view.get_move_msg(self.model.current_player.marker)
+        marker = self.model.current_player.marker
+        message = self.view.get_move_msg(marker)
+        self.ui.give(message)
       end
 
       move_location = get_move_location(self.model.current_player)

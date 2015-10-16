@@ -42,7 +42,7 @@ class GameView
   end
 
   def move_msg(location, marker)
-    puts "\nThe last move was placed in space #{location} by #{marker}"
+    "\nThe last move was placed in space #{location} by #{marker}"
   end
 
   def current_turn_msg(marker)
