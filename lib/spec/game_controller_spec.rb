@@ -22,6 +22,16 @@ describe GameController do
       allow(STDIN).to receive(:gets) { "1" }
       expect(@controller.get_game_type).to eq(1)
     end
+
+     it "returns the integer, 2, if 2 is chosen" do
+      allow(STDIN).to receive(:gets) { "2" }
+      expect(@controller.get_game_type).to eq(2)
+    end
+
+     it "returns the integer, 3, if 3 is chosen" do
+      allow(STDIN).to receive(:gets) { "3" }
+      expect(@controller.get_game_type).to eq(3)
+    end
   end
 
 
