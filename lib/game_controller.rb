@@ -45,10 +45,6 @@ class GameController
 
   end
 
-  def get_input
-    gets.chomp
-  end
-
   def get_game_type(game_type = ui.receive)
     if valid_game_type?(game_type)
       game_type
@@ -89,7 +85,7 @@ class GameController
 
   def get_player_marker_input_for(player)
     while player.marker == nil
-      player_marker = get_input
+      player_marker = ui.receive
 
       if is_a_duplicate_marker?(player_marker)
         ui.give(view.already_selected_msg)
@@ -154,7 +150,7 @@ class GameController
 
     if player.class == HumanPlayer
 
-      move_location = get_input
+      move_location = ui.receive
 
       valid_status = model.validate_move_location(move_location)
 
