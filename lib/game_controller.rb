@@ -21,8 +21,11 @@ class GameController
     ui.give(view.welcome_msg)
     ui.give(view.select_game_type_msg)
 
-    game_type = get_game_type
-    set_game_type(game_type)
+    game_type = nil
+    until valid_game_type?(game_type)
+      game_type = get_game_type
+    end
+    model.set_players(game_type)
 
     ui.give(view.clear)
 
@@ -52,28 +55,8 @@ class GameController
       game_type
     else
       ui.give(view.retry_input_msg)
-      get_game_type
-    end
-  end
-
-  def set_game_type(type)
-
-    case type.to_i
-
-    when 1
-      model.add_human_player
-      model.add_human_player
-
-    when 2
-      model.add_human_player
-      model.add_computer_player
-    when 3
-      model.add_computer_player
-      model.add_computer_player
-    else
       nil
     end
-
   end
 
   def get_player_markers_input

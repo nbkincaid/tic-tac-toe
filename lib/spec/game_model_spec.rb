@@ -42,6 +42,26 @@ describe GameModel do
     end
   end
 
+  describe "#set_players" do
+    it "should set the players array to two human players for a game type of 1" do
+      @model.set_players(1)
+      expect(@model.players[0]).to be_a HumanPlayer
+      expect(@model.players[1]).to be_a HumanPlayer
+    end
+
+    it "should set the players array to one human player and one computer player for a game type of 2" do
+      @model.set_players(2)
+      expect(@model.players[0]).to be_a HumanPlayer
+      expect(@model.players[1]).to be_a ComputerPlayer
+    end
+
+    it "should set the players array to two computer players for a game type of 3" do
+      @model.set_players(3)
+      expect(@model.players[0]).to be_a ComputerPlayer
+      expect(@model.players[1]).to be_a ComputerPlayer
+    end
+  end
+
   describe "#switch_player" do
     it "should change the current player to the other player in the players list" do
      @model.add_human_player
