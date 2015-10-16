@@ -3,57 +3,57 @@ require_relative 'game_view'
 require_relative 'board'
 require_relative 'human_player'
 require_relative 'computer_player'
+require_relative 'ui'
 
 class GameController
 
-  attr_accessor :model, :view
+  attr_accessor :model, :view, :ui
 
   def initialize
     @model = GameModel.new
     @view = GameView.new
+    @ui = UI.new
   end
 
   def play_game
 
-    self.view.clear
-    self.view.welcome_msg
+    ui.give(view.clear)
+    ui.give(view.welcome_msg)
+    ui.give(view.select_game_type_msg)
 
-    self.view.select_game_type_msg
-    get_game_type_input
+    game_type = get_game_type
+    set_game_type(game_type)
 
-    self.view.clear
+    ui.give(view.clear)
+
     get_player_markers_input
 
-    self.view.clear
-    self.view.get_first_player_msg(self.model.players[0].marker, self.model.players[1].marker)
+    message = view.get_first_player_msg(model.players[0].marker, model.players[1].marker)
+    ui.give(message)
+
     get_first_player_input
 
     play_loop
 
-    self.view.clear
-    self.view.show_board(self.model.final_board_state)
+    ui.give(view.clear)
+    ui.give(view.show_board(model.final_board_state))
 
     result_communication
 
-    self.view.thank_you_msg
+    ui.give(view.thank_you_msg)
 
   end
 
-  def get_input
-    gets.chomp
-  end
+  def get_game_type(game_type = ui.receive.to_i)
 
-  def get_game_type_input
-
-    game_type = get_input
+    game_type = game_type.to_i
 
     if valid_game_type?(game_type)
-      set_game_type(game_type)
+      game_type
     else
-      puts self.view.retry_input_msg
-      get_game_type_input
+      ui.give(view.retry_input_msg)
+      get_game_type
     end
-
   end
 
   def set_game_type(type)
@@ -61,15 +61,15 @@ class GameController
     case type.to_i
 
     when 1
-      self.model.add_human_player
-      self.model.add_human_player
+      model.add_human_player
+      model.add_human_player
 
     when 2
-      self.model.add_human_player
-      self.model.add_computer_player
+      model.add_human_player
+      model.add_computer_player
     when 3
-      self.model.add_computer_player
-      self.model.add_computer_player
+      model.add_computer_player
+      model.add_computer_player
     else
       nil
     end
@@ -77,72 +77,74 @@ class GameController
   end
 
   def get_player_markers_input
-    self.model.players.each_with_index do |player,i|
+    model.players.each_with_index do |player,i|
       player_number = i+1
-      self.view.select_player_marker_msg(player_number, player.class)
+      message = view.select_player_marker_msg(player_number, player.class)
+      ui.give(message)
       get_player_marker_input_for(player)
     end
   end
 
   def get_player_marker_input_for(player)
     while player.marker == nil
-      player_marker = get_input
+      player_marker = ui.receive
 
       if is_a_duplicate_marker?(player_marker)
-        self.view.already_selected_msg
+        ui.give(view.already_selected_msg)
         get_player_marker_input_for(player)
       else
         valid = player.set_marker(player_marker)
 
         unless valid
-          self.view.retry_input_msg
+          ui.give(view.retry_input_msg)
         end
       end
     end
   end
 
-  def get_first_player_input
-    marker = get_input
+  def get_first_player_input(marker =ui.receive)
 
-    player = self.model.get_player_by_marker(marker)
+    player = model.get_player_by_marker(marker)
 
     if player != nil
-      self.model.current_player = player
+      model.current_player = player
     else
-      self.view.retry_input_msg
+      ui.give(view.retry_input_msg)
       get_first_player_input
     end
   end
 
   def play_loop
-    until self.model.game_over?
-      self.view.clear
+    until model.game_over?
+      ui.give(view.clear)
 
-      self.view.current_turn_msg(self.model.current_player.marker)
+      ui.give(view.current_turn_msg(model.current_player.marker))
 
-      self.view.show_board(self.model.board_content)
+      ui.give(view.show_board(model.board_content))
 
       last_move_communication
 
-      if self.model.current_player.class == HumanPlayer
-        self.view.get_move_msg(self.model.current_player.marker)
+      if model.current_player.class == HumanPlayer
+        marker = model.current_player.marker
+        message = view.get_move_msg(marker)
+        ui.give(message)
       end
 
-      move_location = get_move_location(self.model.current_player)
+      move_location = get_move_location(model.current_player)
 
-      valid = self.model.add_to_board(move_location, self.model.current_player.marker)
+      valid = model.add_to_board(move_location, model.current_player.marker)
 
-      self.model.store_move(move_location)
+      model.store_move(move_location)
 
-      self.model.switch_player
+      model.switch_player
     end
   end
 
   def last_move_communication
-    if (self.model.moves.length > 0)
-        last_move_location = self.model.moves[-1][:location]
-        last_move_player_marker = self.model.moves[-1][:player].marker
-        self.view.move_msg(last_move_location, last_move_player_marker)
+    if (model.moves.length > 0)
+        last_move_location = model.moves[-1][:location]
+        last_move_player_marker = model.moves[-1][:player].marker
+        view.move_msg(last_move_location, last_move_player_marker)
     end
   end
 
@@ -150,27 +152,27 @@ class GameController
 
     if player.class == HumanPlayer
 
-      move_location = get_input
+      move_location = ui.receive
 
-      valid_status = self.model.validate_move_location(move_location)
+      valid_status = model.validate_move_location(move_location)
 
       if valid_status
         return move_location.to_i
       else
-        self.view.retry_input_msg
+        ui.give(view.retry_input_msg)
         return get_move_location(player)
       end
 
     elsif(player.class == ComputerPlayer)
-      return player.choose_location(self.model.board)
+      return player.choose_location(model.board)
     end
   end
 
   def result_communication
-    if self.model.winner_exists?
-      self.view.winner_msg(self.model.winner_marker)
+    if model.winner_exists?
+     ui.give(view.winner_msg(model.winner_marker))
     else
-      self.view.cat_game_msg
+     ui.give(view.cat_game_msg)
     end
   end
 
