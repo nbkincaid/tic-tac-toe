@@ -3,39 +3,42 @@ require_relative 'game_view'
 require_relative 'board'
 require_relative 'human_player'
 require_relative 'computer_player'
+require_relative 'ui'
 
 class GameController
 
-  attr_accessor :model, :view
+  attr_accessor :model, :view, :ui
 
   def initialize
     @model = GameModel.new
     @view = GameView.new
+    @ui = UI.new
   end
 
   def play_game
 
-    self.view.clear
-    self.view.welcome_msg
+    self.ui.give(self.view.clear)
+    self.ui.give(self.view.welcome_msg)
+    self.ui.give(self.view.select_game_type_msg)
 
-    self.view.select_game_type_msg
-    get_game_type_input
+    game_type = get_game_type
+    set_game_type(game_type)
 
-    self.view.clear
+    self.ui.give(self.view.clear)
+
     get_player_markers_input
 
-    self.view.clear
     self.view.get_first_player_msg(self.model.players[0].marker, self.model.players[1].marker)
     get_first_player_input
 
     play_loop
 
-    self.view.clear
+    self.ui.give(self.view.clear)
     self.view.show_board(self.model.final_board_state)
 
     result_communication
 
-    self.view.thank_you_msg
+    self.ui.give(self.view.thank_you_msg)
 
   end
 
@@ -43,18 +46,29 @@ class GameController
     gets.chomp
   end
 
-  def get_game_type_input
-
-    game_type = get_input
-
+  def get_game_type(game_type=self.ui.receive)
     if valid_game_type?(game_type)
-      set_game_type(game_type)
+      game_type
     else
       puts self.view.retry_input_msg
-      get_game_type_input
+      get_game_type
     end
-
   end
+
+
+
+  # def get_game_type_input(game_type_input)
+
+  #   game_type = game_type_input
+
+  #   if valid_game_type?(game_type)
+  #     set_game_type(game_type)
+  #   else
+  #     puts self.view.retry_input_msg
+  #     get_game_type_input
+  #   end
+
+  # end
 
   def set_game_type(type)
 
@@ -116,7 +130,7 @@ class GameController
 
   def play_loop
     until self.model.game_over?
-      self.view.clear
+      self.ui.give(self.view.clear)
 
       self.view.current_turn_msg(self.model.current_player.marker)
 

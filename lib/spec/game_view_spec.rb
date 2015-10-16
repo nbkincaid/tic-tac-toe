@@ -12,4 +12,113 @@ describe GameView do
     end
   end
 
+  describe "#clear" do
+    it "returns the code to clear the screen" do
+      expect(@view.clear).to eq("\e[H\e[2J")
+    end
+  end
+
+  describe "#welcome_msg" do
+    it "returns the correct message" do
+      expect(@view.welcome_msg).to eq("\nWelcome to awesome terminal tic-tac-toe!")
+    end
+  end
+
+  describe "#" do
+    it "" do
+    end
+  end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+
+  # describe "#" do
+  #   it "" do
+  #   end
+  # end
+
+
 end

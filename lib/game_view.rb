@@ -1,19 +1,15 @@
 class GameView
 
   def clear
-    puts "\e[H\e[2J"
+    "\e[H\e[2J"
   end
 
   def welcome_msg
-    puts "\nWelcome to awesome terminal tic-tac-toe!"
+    "\nWelcome to awesome terminal tic-tac-toe!"
   end
 
   def select_game_type_msg
-    puts "\nWhat type of game do you want to play?"
-    puts "\n\t1: human vs. human"
-    puts "\t2: human vs. computer"
-    puts "\t3: computer vs. computer"
-    puts "\nSelect 1, 2 or 3 to continue"
+    "\nWhat type of game do you want to play?\n\t1: human vs. human\n\t2: human vs. computer\n\t3: computer vs. computer\n\nSelect 1, 2 or 3 to continue"
   end
 
   def select_player_marker_msg(player_number, player_type)
@@ -62,7 +58,7 @@ class GameView
   end
 
   def thank_you_msg
-    puts "\nThank you for playing!\n\n"
+    "\nThank you for playing!\n\n"
   end
 
 

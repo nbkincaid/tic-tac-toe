@@ -17,4 +17,11 @@ describe GameController do
 
   end
 
+  describe "#get_game_type" do
+    it "returns the the game type if valid" do
+
+    end
+  end
+
+
 end
