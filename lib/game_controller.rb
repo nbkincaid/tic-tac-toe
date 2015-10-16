@@ -127,7 +127,7 @@ class GameController
     if (model.moves.length > 0)
         last_move_location = model.moves[-1][:location]
         last_move_player_marker = model.moves[-1][:player].marker
-        view.move_msg(last_move_location, last_move_player_marker)
+        ui.give(view.move_msg(last_move_location, last_move_player_marker))
     end
   end
 
