@@ -46,7 +46,7 @@ class GameController
     gets.chomp
   end
 
-  def get_game_type(game_type=self.ui.receive)
+  def get_game_type(game_type = self.ui.receive)
     if valid_game_type?(game_type)
       game_type
     else
@@ -115,8 +115,7 @@ class GameController
     end
   end
 
-  def get_first_player_input
-    marker = get_input
+  def get_first_player_input(marker = self.ui.receive)
 
     player = self.model.get_player_by_marker(marker)
 
@@ -182,9 +181,9 @@ class GameController
 
   def result_communication
     if self.model.winner_exists?
-      self.view.winner_msg(self.model.winner_marker)
+      self.ui.give(self.view.winner_msg(self.model.winner_marker))
     else
-      self.view.cat_game_msg
+      self.ui.give(self.view.cat_game_msg)
     end
   end
 
