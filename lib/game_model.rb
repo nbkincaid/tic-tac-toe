@@ -59,6 +59,25 @@ class GameModel
     self.players <<  ComputerPlayer.new
   end
 
+  def set_players(game_type)
+    players = []
+
+    case game_type.to_i
+
+    when 1
+      add_human_player
+      add_human_player
+    when 2
+      add_human_player
+      add_computer_player
+    when 3
+      add_computer_player
+      add_computer_player
+    else
+      nil
+    end
+  end
+
   def get_player_by_marker(marker)
     self.players.find{|player| player.marker == marker}
   end

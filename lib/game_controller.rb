@@ -21,8 +21,11 @@ class GameController
     ui.give(view.welcome_msg)
     ui.give(view.select_game_type_msg)
 
-    game_type = get_game_type
-    set_game_type(game_type)
+    game_type = nil
+    until valid_game_type?(game_type)
+      game_type = get_game_type
+    end
+    model.set_players(game_type)
 
     ui.give(view.clear)
 
@@ -44,7 +47,7 @@ class GameController
 
   end
 
-  def get_game_type(game_type = ui.receive.to_i)
+  def get_game_type(game_type = ui.receive)
 
     game_type = game_type.to_i
 
@@ -52,28 +55,8 @@ class GameController
       game_type
     else
       ui.give(view.retry_input_msg)
-      get_game_type
-    end
-  end
-
-  def set_game_type(type)
-
-    case type.to_i
-
-    when 1
-      model.add_human_player
-      model.add_human_player
-
-    when 2
-      model.add_human_player
-      model.add_computer_player
-    when 3
-      model.add_computer_player
-      model.add_computer_player
-    else
       nil
     end
-
   end
 
   def get_player_markers_input
@@ -102,7 +85,7 @@ class GameController
     end
   end
 
-  def get_first_player_input(marker =ui.receive)
+  def get_first_player_input(marker = ui.receive)
 
     player = model.get_player_by_marker(marker)
 
@@ -132,7 +115,7 @@ class GameController
 
       move_location = get_move_location(model.current_player)
 
-      valid = model.add_to_board(move_location, model.current_player.marker)
+      model.add_to_board(move_location, model.current_player.marker)
 
       model.store_move(move_location)
 
