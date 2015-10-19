@@ -47,7 +47,7 @@ class GameController
 
   end
 
-  def get_game_type(game_type = ui.receive.to_i)
+  def get_game_type(game_type = ui.receive)
 
     game_type = game_type.to_i
 
@@ -85,7 +85,7 @@ class GameController
     end
   end
 
-  def get_first_player_input(marker =ui.receive)
+  def get_first_player_input(marker = ui.receive)
 
     player = model.get_player_by_marker(marker)
 
@@ -115,7 +115,7 @@ class GameController
 
       move_location = get_move_location(model.current_player)
 
-      valid = model.add_to_board(move_location, model.current_player.marker)
+      model.add_to_board(move_location, model.current_player.marker)
 
       model.store_move(move_location)
 

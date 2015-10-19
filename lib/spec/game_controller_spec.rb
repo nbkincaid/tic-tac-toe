@@ -40,7 +40,4 @@ describe GameController do
     end
   end
 
-
-
-
 end
