@@ -7,8 +7,6 @@ require_relative 'ui'
 
 class GameController
 
-  attr_accessor :model, :view, :ui
-
   def initialize
     @model = GameModel.new
     @view = GameView.new
@@ -16,7 +14,6 @@ class GameController
   end
 
   def play_game
-
     ui.give(view.clear)
     ui.give(view.welcome_msg)
     ui.give(view.select_game_type_msg)
@@ -46,6 +43,10 @@ class GameController
     ui.give(view.thank_you_msg)
 
   end
+
+  private
+
+  attr_accessor :model, :view, :ui
 
   def get_game_type(game_type = ui.receive)
 
