@@ -39,7 +39,7 @@ describe GameController do
 
     it "outputs an invalid input message if an invalid input is received and returns nil" do
       allow(STDIN).to receive(:gets) { "A" }
-      expect {  @controller.get_game_type }.to output("Sorry, that input is not valid, please try again.\n").to_stdout
+      expect {  @controller.get_game_type }.to output(/Sorry, that input is not valid, please try again./).to_stdout
       expect(@controller.get_game_type).to eq(nil)
     end
   end

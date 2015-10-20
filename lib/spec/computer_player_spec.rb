@@ -4,6 +4,7 @@ describe ComputerPlayer do
 
   before :each do
     @player = ComputerPlayer.new
+    allow_any_instance_of(ComputerPlayer).to receive(:sleep).and_return(nil)
   end
 
   describe "::new" do
@@ -43,16 +44,6 @@ describe ComputerPlayer do
                           "3","N","5",
                           "B","7","8"])
       expect(@player.choose_location(board)).to eq(8)
-    end
-  end
-
-  describe "#appear_to_be_thinking" do
-    it "waits two seconds" do
-      start_time = Time.now
-      @player.appear_to_be_thinking
-      finish_time = Time.now
-      delta = finish_time - start_time
-      expect(delta >= 2).to be true
     end
   end
 
