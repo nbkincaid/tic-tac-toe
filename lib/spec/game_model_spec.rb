@@ -28,20 +28,6 @@ describe GameModel do
     end
   end
 
-  describe "#add_human_player" do
-    it "should add a human player object to the players array" do
-      @model.add_human_player
-      expect(@model.players.index {|player| player.is_a?(HumanPlayer)}).to eq(0)
-    end
-  end
-
-  describe "#add_computer_player" do
-    it "should add a computer player object to the players array" do
-      @model.add_computer_player
-      expect(@model.players.index {|player| player.is_a?(ComputerPlayer)}).to eq(0)
-    end
-  end
-
   describe "#set_players" do
     it "should set the players array to two human players for a game type of 1" do
       @model.set_players(1)
@@ -64,8 +50,7 @@ describe GameModel do
 
   describe "#switch_player" do
     it "should change the current player to the other player in the players list" do
-     @model.add_human_player
-     @model.add_computer_player
+     @model.set_players(2)
 
      player1 = @model.players[0]
      player2 = @model.players[1]
@@ -80,10 +65,11 @@ describe GameModel do
 
   describe "#store_move" do
     it "should add a move as a hash to the moves array" do
-      player = @model.add_human_player
-      @model.current_player = player
-      location =
+      @model.set_players(2)
+      @model.current_player = @model.players[0]
+      location = 1
       @model.store_move(location)
+      expect(@model.moves[-1]).to eq({player: @model.current_player, location: location})
     end
   end
 
@@ -143,8 +129,7 @@ describe GameModel do
 
   describe "#get_player_by_marker" do
     it "should return the player for a given marker" do
-
-      @model.add_human_player
+      @model.set_players(2)
       player = @model.players[0]
       player.set_marker("N")
 
