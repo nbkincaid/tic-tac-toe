@@ -22,12 +22,60 @@ describe ComputerPlayer do
   end
 
   describe "#choose_location" do
+    it "selects the center location on its first try with an empty board" do
+      @player.set_marker("N")
+      board = Board.new([ "0","1","2",
+                          "3","4","5",
+                          "6","7","8"])
+      expect(@player.choose_location(board)).to eq(4)
+    end
+
+    it "selects the center location on its first try if its open" do
+      @player.set_marker("N")
+      board = Board.new([ "0","B","2",
+                          "3","4","5",
+                          "6","7","8"])
+      expect(@player.choose_location(board)).to eq(4)
+    end
+
+    it "selects the a side location on its second try if it has the middle" do
+      @player.set_marker("N")
+      board = Board.new([ "0","B","2",
+                          "3","N","5",
+                          "6","7","8"])
+      expect(@player.choose_location(board)).to eq(3)
+    end
+
+    it "selects a corner location on its second try if it has a corner" do
+      @player.set_marker("N")
+      board = Board.new([ "N","B","2",
+                          "3","4","5",
+                          "6","7","8"])
+      expect(@player.choose_location(board)).to eq(8)
+    end
+
     it "selects the correct location according to its internal sequence of priorities" do
       @player.set_marker("N")
       board = Board.new([ "N","1","2",
                           "3","B","5",
                           "6","7","B"])
       expect(@player.choose_location(board)).to eq(2)
+    end
+
+    it "selects the correct location to avoid losing the game" do
+      @player.set_marker("N")
+      board = Board.new([ "N","N","B",
+                          "3","B","5",
+                          "6","7","8"])
+      expect(@player.choose_location(board)).to eq(6)
+    end
+
+    it "selects the correct location to win the game" do
+      @player.set_marker("N")
+      board = Board.new([ "B","1","2",
+                          "N","N","5",
+                          "6","7","B"])
+      expect(@player.choose_location(board)).to eq(5)
     end
   end
 
