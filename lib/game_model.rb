@@ -51,7 +51,6 @@ class GameModel
     self.moves << {player: current_player, location: location}
   end
 
-
   def set_players(game_type)
     players = []
 

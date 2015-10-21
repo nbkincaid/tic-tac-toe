@@ -2,11 +2,6 @@ require_relative 'player'
 
 class ComputerPlayer < Player
 
-  FIRST_MOVE_CHOICES = [4,0]
-  SIDE_CHOICES = [1,3,5,7]
-  CORNER_CHOICES = [0,8,2,6]
-  LEFTOVER_MOVE_CHOICES = [4,0,8,2,6,1,3,5,7]
-
   def choose_location(board)
     appear_to_be_thinking
 
@@ -30,6 +25,13 @@ class ComputerPlayer < Player
 
     return leftover_move_choice(board)
   end
+
+  private
+
+  FIRST_MOVE_CHOICES = [4,0]
+  SIDE_CHOICES = [1,3,5,7]
+  CORNER_CHOICES = [0,8,2,6]
+  LEFTOVER_MOVE_CHOICES = [4,0,8,2,6,1,3,5,7]
 
   def appear_to_be_thinking
     sleep(2)
