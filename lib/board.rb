@@ -3,7 +3,7 @@ class Board
   attr_reader :squares
 
   def initialize(squares = nil)
-    @squares = squares || ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+    @squares = squares || Array.new(9)
   end
 
   def clear_state
@@ -116,7 +116,6 @@ class Board
     nil
 
   end
-
 
   def location_inside_board?(location)
     if location >= 0 && location <= 8
