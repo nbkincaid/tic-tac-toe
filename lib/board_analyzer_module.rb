@@ -43,16 +43,11 @@ module BoardAnalyzer
     candidate_vals = []
 
     SEQUENCES.each do |seq|
-
-      square1 = board.squares[seq[0]] || seq[0]
-      square2 = board.squares[seq[1]] || seq[1]
-      square3 = board.squares[seq[2]] || seq[2]
-
-      sequence_vals = [ square1, square2, square3 ].uniq
+      sequence_vals = manipulated_sequence_vals(board,seq)
 
       if (sequence_vals.uniq.count) == 3 && (sequence_vals.count {|val| val.is_a? Integer}) == 2
-        numerical_digits = sequence_vals.select {|val| val.is_a? Integer }
-        numerical_digits.each {|val| candidate_vals << val}
+        location_indices = sequence_vals.select {|val| val.is_a? Integer }
+        location_indices.each {|location| candidate_vals << location}
       end
     end
 
@@ -68,11 +63,7 @@ module BoardAnalyzer
   def sequence_filler_square(board)
 
     SEQUENCES.each do |seq|
-      square1 = board.squares[seq[0]] || seq[0]
-      square2 = board.squares[seq[1]] || seq[1]
-      square3 = board.squares[seq[2]] || seq[2]
-
-      sequence_vals = [ square1, square2, square3 ].uniq
+      sequence_vals = manipulated_sequence_vals(board,seq)
 
       if sequence_vals.length == 2 && sequence_vals.any? {|val| val.is_a? Integer}
         sequence_filler_square = sequence_vals.find {|val| val.is_a? Integer }
@@ -83,6 +74,16 @@ module BoardAnalyzer
 
     nil
 
+  end
+
+  private
+
+  def manipulated_sequence_vals(board,sequence)
+    square1 = board.squares[sequence[0]] || sequence[0]
+    square2 = board.squares[sequence[1]] || sequence[1]
+    square3 = board.squares[sequence[2]] || sequence[2]
+
+    sequence_vals = [ square1, square2, square3 ].uniq
   end
 
 end
