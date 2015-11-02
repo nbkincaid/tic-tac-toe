@@ -1,4 +1,4 @@
-module BOARDANALYZER
+module BoardAnalyzer
 
   SEQUENCES = [ [0,1,2],
                 [3,4,5],
@@ -10,89 +10,79 @@ module BOARDANALYZER
                 [2,4,6]
               ]
 
-  # def clear_state
-  #   squares.map do |square|
-  #     if square =~ /[[:alpha:]]/
-  #       square
-  #     else
-  #       " "
-  #     end
-  #   end
-  # end
-
   def three_in_a_row?(board)
-    ( [board.squares[0], board.squares[1], board.squares[2]].uniq.length == 1 ||
-      [board.squares[3], board.squares[4], board.squares[5]].uniq.length == 1 ||
-      [board.squares[6], board.squares[7], board.squares[8]].uniq.length == 1 ||
-      [board.squares[0], board.squares[3], board.squares[6]].uniq.length == 1 ||
-      [board.squares[1], board.squares[4], board.squares[7]].uniq.length == 1 ||
-      [board.squares[2], board.squares[5], board.squares[8]].uniq.length == 1 ||
-      [board.squares[0], board.squares[4], board.squares[8]].uniq.length == 1 ||
-      [board.squares[2], board.squares[4], board.squares[6]].uniq.length == 1
-    ) && board.squares.uniq != [nil]
+    SEQUENCES.each do |seq|
+      sequence_vals = [board.squares[seq[0]], board.squares[seq[1]], board.squares[seq[2]] ].uniq
+      return true if sequence_vals.any? && sequence_vals.length == 1
+    end
+    false
   end
 
-  # def three_in_a_row_marker
-  #   SEQUENCES.each do |seq|
-  #     sequence_vals = [ squares[seq[0]], squares[seq[1]], squares[seq[2]] ].uniq
-  #     if sequence_vals.length == 1
-  #       return sequence_vals[0]
-  #     end
-  #   end
-  #   return nil
-  # end
+  def three_in_a_row_marker(board)
+    SEQUENCES.each do |seq|
+      sequence_vals = [board.squares[seq[0]], board.squares[seq[1]], board.squares[seq[2]] ].uniq
+      return sequence_vals.first if sequence_vals.length == 1
+    end
+    nil
+  end
 
+  def squares_empty?(board)
+    board.squares.uniq.none?
+  end
 
-  # def squares_empty?
-  #   squares.uniq.all? {|marker| !(marker =~ /[[:alpha:]]/)}
-  # end
+  def squares_full?(board)
+    board.squares.all? && board.squares.length == 9
+  end
 
-  # def squares_full?
-  #   square_content_uniqs = squares.uniq
-  #   square_content_uniqs.length == 2 && square_content_uniqs.all? {|marker| marker =~ /[[:alpha:]]/}
-  # end
+  def count_marker(board,marker)
+    board.squares.count(marker)
+  end
 
-  # def count_marker(marker)
-  #   squares.count(marker)
-  # end
+  def most_eligible_square(board)
 
-  # def most_eligible_square
+    candidate_vals = []
 
-  #   candidate_vals = []
+    SEQUENCES.each do |seq|
 
-  #   SEQUENCES.each do |seq|
-  #     sequence_vals = [ squares[seq[0]], squares[seq[1]], squares[seq[2]] ].uniq
+      square1 = board.squares[seq[0]] || seq[0]
+      square2 = board.squares[seq[1]] || seq[1]
+      square3 = board.squares[seq[2]] || seq[2]
 
-  #     if (sequence_vals.uniq.count) == 3 && (sequence_vals.count {|val| val =~ /\A\d+\Z/ }) == 2
-  #       numerical_digits = sequence_vals.select {|val| val =~ /\A\d+\Z/ }
-  #       numerical_digits.each {|val| candidate_vals << val}
-  #     end
-  #   end
+      sequence_vals = [ square1, square2, square3 ].uniq
 
-  #   if (candidate_vals.length != 0)  && (candidate_vals.length != candidate_vals.uniq.length)
-  #     most_eligible_square = candidate_vals.max_by{|val| candidate_vals.count(val) }
-  #     most_eligible_square.to_i
-  #   else
-  #     nil
-  #   end
+      if (sequence_vals.uniq.count) == 3 && (sequence_vals.count {|val| val.is_a? Integer}) == 2
+        numerical_digits = sequence_vals.select {|val| val.is_a? Integer }
+        numerical_digits.each {|val| candidate_vals << val}
+      end
+    end
 
-  # end
+    if (candidate_vals.length != 0)  && (candidate_vals.length != candidate_vals.uniq.length)
+      most_eligible_square = candidate_vals.max_by{|val| candidate_vals.count(val) }
+      most_eligible_square.to_i
+    else
+      nil
+    end
 
-  # def sequence_filler_square
+  end
 
-  #   SEQUENCES.each do |seq|
-  #     sequence_vals = [ squares[seq[0]], squares[seq[1]], squares[seq[2]] ].uniq
+  def sequence_filler_square(board)
 
-  #     if sequence_vals.length == 2 && sequence_vals.any? {|val| val =~ /\A\d+\Z/ }
-  #       sequence_filler_square = sequence_vals.find {|val| val =~ /\A\d+\Z/ }
-  #       return sequence_filler_square.to_i
-  #     end
-  #   end
+    SEQUENCES.each do |seq|
+      square1 = board.squares[seq[0]] || seq[0]
+      square2 = board.squares[seq[1]] || seq[1]
+      square3 = board.squares[seq[2]] || seq[2]
 
-  #   nil
+      sequence_vals = [ square1, square2, square3 ].uniq
 
-  # end
+      if sequence_vals.length == 2 && sequence_vals.any? {|val| val.is_a? Integer}
+        sequence_filler_square = sequence_vals.find {|val| val.is_a? Integer }
+        return sequence_filler_square
+      end
 
+    end
 
+    nil
+
+  end
 
 end

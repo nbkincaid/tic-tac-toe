@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe BoardAnalyzer do
+describe Board do
 
   before :each do
     @board = Board.new
