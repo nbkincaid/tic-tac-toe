@@ -12,7 +12,7 @@ module BoardAnalyzer
 
   def three_in_a_row?(board)
     SEQUENCES.each do |seq|
-      sequence_vals = [board.squares[seq[0]], board.squares[seq[1]], board.squares[seq[2]] ].uniq
+      sequence_vals = unmanipulated_sequence_vals(board,seq)
       return true if sequence_vals.any? && sequence_vals.length == 1
     end
     false
@@ -20,7 +20,7 @@ module BoardAnalyzer
 
   def three_in_a_row_marker(board)
     SEQUENCES.each do |seq|
-      sequence_vals = [board.squares[seq[0]], board.squares[seq[1]], board.squares[seq[2]] ].uniq
+      sequence_vals = unmanipulated_sequence_vals(board,seq)
       return sequence_vals.first if sequence_vals.any? && sequence_vals.length == 1
     end
     nil
@@ -77,6 +77,14 @@ module BoardAnalyzer
   end
 
   private
+
+  def unmanipulated_sequence_vals(board,sequence)
+    square1 = board.squares[sequence[0]]
+    square2 = board.squares[sequence[1]]
+    square3 = board.squares[sequence[2]]
+
+    sequence_vals = [ square1, square2, square3 ].uniq
+  end
 
   def manipulated_sequence_vals(board,sequence)
     square1 = board.squares[sequence[0]] || sequence[0]

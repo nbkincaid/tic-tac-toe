@@ -155,21 +155,12 @@ class GameController
 
   def valid_game_type?(input)
     input = input.to_i
-
-    if input == 1 || input == 2 || input == 3
-      return true
-    else
-      return false
-    end
+    input == 1 || input == 2 || input == 3
   end
 
   def is_a_duplicate_marker?(player_marker)
     search_result = model.get_player_by_marker(player_marker)
-    if search_result == nil
-      false
-    else
-      true
-    end
+    search_result != nil
   end
 
 end
