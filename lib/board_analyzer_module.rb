@@ -21,7 +21,7 @@ module BoardAnalyzer
   def three_in_a_row_marker(board)
     SEQUENCES.each do |seq|
       sequence_vals = [board.squares[seq[0]], board.squares[seq[1]], board.squares[seq[2]] ].uniq
-      return sequence_vals.first if sequence_vals.length == 1
+      return sequence_vals.first if sequence_vals.any? && sequence_vals.length == 1
     end
     nil
   end

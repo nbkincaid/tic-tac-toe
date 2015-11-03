@@ -8,7 +8,6 @@ require_relative 'board_analyzer_module'
 
 class GameController
   include UI
-  include BoardAnalyzer
 
   def initialize
     @model = GameModel.new
