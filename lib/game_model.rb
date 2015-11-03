@@ -40,10 +40,10 @@ class GameModel
   end
 
   def validate_move_location(move_location)
-    is_numeric_status = (move_location =~ /\A\d+\Z/)
-    is_valid_status = board.valid_location?(move_location.to_i)
+    is_integer_status = move_location.is_a? Integer
+    is_valid_status = board.valid_location?(move_location)
 
-    is_numeric_status && is_valid_status
+    is_integer_status && is_valid_status
   end
 
   def store_move(location)
