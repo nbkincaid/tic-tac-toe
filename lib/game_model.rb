@@ -1,3 +1,5 @@
+require_relative 'board_analyzer_module'
+
 class GameModel
   include BoardAnalyzer
 

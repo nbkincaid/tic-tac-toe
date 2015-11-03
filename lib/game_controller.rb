@@ -38,7 +38,7 @@ class GameController
     play_loop
 
     give(view.clear)
-    give(view.show_final_board(model.board))
+    give(view.show_final_board(model.board.squares))
 
     result_communication
 
