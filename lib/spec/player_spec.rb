@@ -36,15 +36,4 @@ describe Player do
     end
   end
 
-
-  describe "#valid_marker" do
-    it "should return true for an input that is an alphabetical string of length 1" do
-      expect(@player.valid_marker?("T")).to eq(true)
-    end
-
-    it "should return false for an input that is not an alphabetical string of length 1" do
-      expect(@player.valid_marker?("AA")).to eq(false)
-    end
-  end
-
 end

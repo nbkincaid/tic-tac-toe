@@ -27,11 +27,11 @@ module BoardAnalyzer
   end
 
   def squares_empty?(board)
-    board.squares.uniq.none?
+    board.squares.none?
   end
 
   def squares_full?(board)
-    board.squares.all? && board.squares.length == 9
+    board.squares.all?
   end
 
   def count_marker(board,marker)
@@ -45,10 +45,11 @@ module BoardAnalyzer
     SEQUENCES.each do |seq|
       sequence_vals = manipulated_sequence_vals(board,seq)
 
-      if (sequence_vals.uniq.count) == 3 && (sequence_vals.count {|val| val.is_a? Integer}) == 2
+      if (sequence_vals.uniq.count) == 3 && sequence_vals.count {|val| val.is_a? Integer} == 2
         location_indices = sequence_vals.select {|val| val.is_a? Integer }
         location_indices.each {|location| candidate_vals << location}
       end
+
     end
 
     if (candidate_vals.length != 0)  && (candidate_vals.length != candidate_vals.uniq.length)
@@ -69,7 +70,6 @@ module BoardAnalyzer
         sequence_filler_square = sequence_vals.find {|val| val.is_a? Integer }
         return sequence_filler_square
       end
-
     end
 
     nil

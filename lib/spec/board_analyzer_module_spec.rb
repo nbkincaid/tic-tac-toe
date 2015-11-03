@@ -1,14 +1,12 @@
 require_relative 'spec_helper'
 
-
-
 describe BoardAnalyzer do
 
   class TestClass
     include BoardAnalyzer
   end
 
-  let(:test_object) { TestClass.new } #{ include BOARDANALYZER } }
+  let(:test_object) { TestClass.new }
 
   describe "#three_in_a_row?" do
     it "should return true if there is a match in the top horizontal row" do

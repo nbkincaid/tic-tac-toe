@@ -1,4 +1,4 @@
-class UI
+module UI
   def give(output_message, stdout = $stdout)
     stdout.puts output_message
   end

@@ -12,7 +12,7 @@ describe GameModel do
     end
 
     it "initializes a board object instance variable and sets the squares content to their indices in string format " do
-      expect(@model.board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+      expect(@model.board.squares).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
     end
 
     it "initializes an empty instance variable called current_player" do
@@ -73,23 +73,17 @@ describe GameModel do
     end
   end
 
-  describe "#final_board_state" do
-    it "should return the board with numerical digits replaced by one space" do
-      expect(@model.final_board_state).to eq([" "," "," "," "," "," "," "," "," "])
-    end
-  end
-
   describe "#board_content" do
     it "should return the board as is" do
-      expect(@model.board_content).to eq(["0","1","2","3","4","5","6","7","8"])
+      expect(@model.board_content).to eq([nil,nil,nil,nil,nil,nil,nil,nil,nil])
     end
   end
 
   describe "#add_to_board" do
     it "should add the indicated marker to the board's squares" do
-      expect(@model.board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+      expect(@model.board.squares).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
       @model.add_to_board(8,"X")
-      expect(@model.board.squares).to eq(["0", "1", "2", "3", "4", "5", "6", "7", "X"])
+      expect(@model.board.squares).to eq([nil, nil, nil, nil, nil, nil, nil, nil, "X"])
     end
   end
 
@@ -119,7 +113,7 @@ describe GameModel do
 
   describe "#validate_move_location" do
     it "should return true for a valid location" do
-      @model.validate_move_location("2")
+      @model.validate_move_location(nil)
     end
 
     it "should return false for an invalid location" do

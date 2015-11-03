@@ -54,8 +54,6 @@ describe Board do
 
   end
 
-
-
   describe "#has_at?" do
     it "should return true when the specified square contains the specified character" do
       board = Board.new([nil,nil,nil,"P",nil,nil,nil,nil,nil])
@@ -67,7 +65,6 @@ describe Board do
       expect(board.has_at?("P", 4)).to eq(false)
     end
   end
-
 
   describe "#valid_marker?" do
     it "returns true for an alphabetical string of length 1" do
