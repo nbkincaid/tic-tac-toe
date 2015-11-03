@@ -1,10 +1,13 @@
+require_relative 'board_analyzer_module'
+
 class GameModel
+  include BoardAnalyzer
 
   attr_accessor :current_player
   attr_reader :board, :players, :moves
 
   def initialize
-    @board = Board.new(["0", "1", "2", "3", "4", "5", "6", "7", "8"])
+    @board = Board.new
     @current_player = nil
     @players = []
     @moves = []
@@ -20,16 +23,12 @@ class GameModel
     end
   end
 
-  def final_board_state
-    board.clear_state
-  end
-
   def winner_exists?
-    board.three_in_a_row?
+    three_in_a_row?(board)
   end
 
   def winner_marker
-    board.three_in_a_row_marker
+    three_in_a_row_marker(board)
   end
 
   def board_content
@@ -75,7 +74,7 @@ class GameModel
   end
 
   def game_over?
-    board.three_in_a_row? || board.squares_full?
+    three_in_a_row?(board) || squares_full?(board)
   end
 
   private

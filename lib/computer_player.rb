@@ -38,11 +38,11 @@ class ComputerPlayer < Player
   end
 
   def avoid_defeat_or_win_game_choice(board)
-    board.sequence_filler_square
+    sequence_filler_square(board)
   end
 
   def tactical_choice(board)
-    board.most_eligible_square
+    most_eligible_square(board)
   end
 
   def leftover_move_choice(board)
@@ -54,11 +54,11 @@ class ComputerPlayer < Player
   end
 
   def first_move?(board)
-    board.count_marker(self.marker) == 0
+    count_marker(board, self.marker) == 0
   end
 
   def second_move?(board)
-    board.count_marker(self.marker) == 1
+    count_marker(board, self.marker) == 1
   end
 
   def pick_first_move(board)

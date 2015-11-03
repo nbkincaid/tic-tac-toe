@@ -29,7 +29,11 @@ class GameView
   end
 
   def show_board(board)
-    "\t #{board[0]} | #{board[1]} | #{board[2]}\n\t-----------\n\t #{board[3]} | #{board[4]} | #{board[5]}\n\t-----------\n\t #{board[6]} | #{board[7]} | #{board[8]}"
+    "\t #{board[0] || 0} | #{board[1] || 1} | #{board[2] || 2}\n\t-----------\n\t #{board[3] || 3} | #{board[4] || 4} | #{board[5] || 5}\n\t-----------\n\t #{board[6] || 6} | #{board[7] || 7} | #{board[8] || 8}"
+  end
+
+  def show_final_board(board)
+    "\t #{board[0] || " "} | #{board[1] || " "} | #{board[2] || " "}\n\t-----------\n\t #{board[3] || " "} | #{board[4] || " "} | #{board[5] || " "}\n\t-----------\n\t #{board[6] || " "} | #{board[7] || " "} | #{board[8] || " "}"
   end
 
   def get_move_msg(marker)

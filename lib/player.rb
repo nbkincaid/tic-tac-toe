@@ -1,4 +1,9 @@
+require_relative 'ui'
+require_relative 'board_analyzer_module'
+
 class Player
+  include UI
+  include BoardAnalyzer
 
   attr_reader :marker
 
@@ -15,12 +20,10 @@ class Player
     end
   end
 
+  private
+
   def valid_marker?(marker)
-    if (marker.is_a? String) && (marker.length == 1) && marker =~ /[[:alpha:]]/
-      true
-    else
-      false
-    end
+    (marker.is_a? String) && (marker.length == 1) && marker =~ /[[:alpha:]]/
   end
 
 end
