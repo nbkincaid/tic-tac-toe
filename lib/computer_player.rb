@@ -2,6 +2,7 @@ require_relative 'player'
 
 class ComputerPlayer < Player
 
+
   def choose_location(board)
     appear_to_be_thinking
 

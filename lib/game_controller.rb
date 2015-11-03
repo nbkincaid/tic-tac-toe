@@ -110,11 +110,9 @@ class GameController
 
       last_move_communication
 
-      if model.current_player.class == HumanPlayer
-        marker = model.current_player.marker
-        message = view.get_move_msg(marker)
-        give(message)
-      end
+      marker = model.current_player.marker
+      message = view.get_move_msg(marker)
+      give(message)
 
       move_location = get_move_location(model.current_player)
 
@@ -128,30 +126,24 @@ class GameController
 
   def last_move_communication
     if (model.moves.length > 0)
-        last_move_location = model.moves[-1][:location]
-        last_move_player_marker = model.moves[-1][:player].marker
-        give(view.move_msg(last_move_location, last_move_player_marker))
+      last_move_location = model.moves[-1][:location]
+      last_move_player_marker = model.moves[-1][:player].marker
+      give(view.move_msg(last_move_location, last_move_player_marker))
     end
   end
 
   def get_move_location(player)
 
-    if player.class == HumanPlayer
+    move_location = player.choose_location(model.board).to_i
+    valid_status = model.validate_move_location(move_location)
 
-      move_location = receive
-
-      valid_status = model.validate_move_location(move_location)
-
-      if valid_status
-        return move_location.to_i
-      else
-        give(view.retry_input_msg)
-        return get_move_location(player)
-      end
-
-    elsif(player.class == ComputerPlayer)
-      return player.choose_location(model.board)
+    if valid_status
+      return move_location.to_i
+    else
+      give(view.retry_input_msg)
+      return get_move_location(player)
     end
+
   end
 
   def result_communication
